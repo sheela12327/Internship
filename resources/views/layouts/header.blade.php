@@ -8,9 +8,33 @@
 				<li><a href="#"><i class="fa fa-map-marker"></i> Ratnachowk, Pokhara</a></li>
 			</ul>
 			<ul class="header-links pull-right">
-				<li><a href="#"><i class="fa fa-ruppee"></i> NRS</a></li>
-				<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
-			</ul>
+                <li><a href="#"><i class="fa fa-rupee"></i> NRS</a></li>
+
+                @auth
+                <!-- ACCOUNT DROPDOWN -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-user-o"></i> {{ Auth::user()->name }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ route('profile.edit') }}"><i class="fa fa-user"></i> Profile</a></li>
+
+                        <li>
+                            <a href="{{ route('logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fa fa-sign-out"></i> Logout
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+                                @csrf
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                @else
+                <li><a href="{{ route('register') }}"><i class="fa fa-user-o"></i>Register</a></li>
+                @endauth
+            </ul>
 		</div>
 	</div>
 	<!-- /TOP HEADER -->
