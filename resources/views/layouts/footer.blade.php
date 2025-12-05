@@ -8,11 +8,11 @@
 						<div class="col-md-3 col-xs-6">
 							<div class="footer">
 								<h3 class="footer-title">About Us</h3>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
+								<p>We offer good-quality products at fair prices and aim to make your online shopping easy and comfortable.</p>
 								<ul class="footer-links">
-									<li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
-									<li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
-									<li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
+									<li><a href="#"><i class="fa fa-map-marker"></i>Ratnachowk, Pokhara</a></li>
+									<li><a href="#"><i class="fa fa-phone"></i>+977 9847741752</a></li>
+									<li><a href="#"><i class="fa fa-envelope-o"></i>eshop@mail.com</a></li>
 								</ul>
 							</div>
 						</div>
@@ -22,9 +22,10 @@
 								<h3 class="footer-title">Categories</h3>
 								<ul class="footer-links">
 									<li><a href="#">Hot deals</a></li>
-									<li><a href="#">Laptops</a></li>
-									<li><a href="#">Smartphones</a></li>
-									<li><a href="#">Cameras</a></li>
+									<li><a href="#">Summer Collection</a></li>
+									<li><a href="#">Winter Collection</a></li>
+									<li><a href="#">Footwear</a></li>
+									<li><a href="#">Bags</a></li>
 									<li><a href="#">Accessories</a></li>
 								</ul>
 							</div>

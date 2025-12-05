@@ -1,14 +1,15 @@
 <header>
+
 			<!-- TOP HEADER -->
 			<div id="top-header">
 				<div class="container">
 					<ul class="header-links pull-left">
-						<li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
-						<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
-						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
+						<li><a href="#"><i class="fa fa-phone"></i> +977 9847741752</a></li>
+						<li><a href="#"><i class="fa fa-envelope-o"></i> eshop@gmail.com</a></li>
+						<li><a href="#"><i class="fa fa-map-marker"></i> Ratnachowk, Pokhara</a></li>
 					</ul>
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
+						<li><a href="#"><i class="fa fa-ruppee"></i> NRS</a></li>
 						<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
 					</ul>
 				</div>
@@ -37,8 +38,10 @@
 								<form>
 									<select class="input-select">
 										<option value="0">All Categories</option>
-										<option value="1">Category 01</option>
-										<option value="1">Category 02</option>
+										<option value="1">Womens Fashion</option>
+										<option value="1">Mens Fashion</option>
+										<option value="1">Kids Wear</option>
+										<option value="1">Accessories </option>
 									</select>
 									<input class="input" placeholder="Search here">
 									<button class="search-btn">Search</button>
@@ -134,9 +137,10 @@
 						<li class="active"><a href="#">Home</a></li>
 						<li><a href="#">Hot Deals</a></li>
 						<li><a href="#">Categories</a></li>
-						<li><a href="#">Laptops</a></li>
-						<li><a href="#">Smartphones</a></li>
-						<li><a href="#">Cameras</a></li>
+						<li><a href="#">Summer Collections</a></li>
+						<li><a href="#">Summer Collections</a></li>
+						<li><a href="#">Footwear</a></li>
+						<li><a href="#">Bags</a></li>
 						<li><a href="#">Accessories</a></li>
 					</ul>
 					<!-- /NAV -->

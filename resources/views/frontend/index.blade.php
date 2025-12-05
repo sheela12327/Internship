@@ -14,7 +14,7 @@
 								<img src="{{asset('frontend/img/shop01.png')}}" alt="">
 							</div>
 							<div class="shop-body">
-								<h3>Laptop<br>Collection</h3>
+								<h3>Men<br>Fashion</h3>
 								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>
@@ -28,7 +28,7 @@
 								<img src="{{asset('frontend/img/shop03.png')}}" alt="">
 							</div>
 							<div class="shop-body">
-								<h3>Accessories<br>Collection</h3>
+								<h3>Women<br>Fashion</h3>
 								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>
@@ -42,7 +42,7 @@
 								<img src="{{asset('frontend/img/shop02.png')}}" alt="">
 							</div>
 							<div class="shop-body">
-								<h3>Cameras<br>Collection</h3>
+								<h3>Kids<br>Wear</h3>
 								<a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>
@@ -68,9 +68,9 @@
 							<h3 class="title">New Products</h3>
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
-									<li class="active"><a data-toggle="tab" href="#tab1">Laptops</a></li>
-									<li><a data-toggle="tab" href="#tab1">Smartphones</a></li>
-									<li><a data-toggle="tab" href="#tab1">Cameras</a></li>
+									<li class="active"><a data-toggle="tab" href="#tab1">Men Fashion</a></li>
+									<li><a data-toggle="tab" href="#tab1">Women Fashion</a></li>
+									<li><a data-toggle="tab" href="#tab1">Kids Wear</a></li>
 									<li><a data-toggle="tab" href="#tab1">Accessories</a></li>
 								</ul>
 							</div>
@@ -303,9 +303,9 @@
 							<h3 class="title">Top selling</h3>
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
-									<li class="active"><a data-toggle="tab" href="#tab2">Laptops</a></li>
-									<li><a data-toggle="tab" href="#tab2">Smartphones</a></li>
-									<li><a data-toggle="tab" href="#tab2">Cameras</a></li>
+									<li class="active"><a data-toggle="tab" href="#tab2">Men Fashion</a></li>
+									<li><a data-toggle="tab" href="#tab2">Women Fashion</a></li>
+									<li><a data-toggle="tab" href="#tab2">Kids Wear</a></li>
 									<li><a data-toggle="tab" href="#tab2">Accessories</a></li>
 								</ul>
 							</div>
