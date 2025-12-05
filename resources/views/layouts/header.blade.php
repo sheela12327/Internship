@@ -1,154 +1,155 @@
 <header>
+	<!-- TOP HEADER -->
+	<div id="top-header">
+		<div class="container">
+			<ul class="header-links pull-left">
+				<li><a href="#"><i class="fa fa-phone"></i> +977 9847741752</a></li>
+				<li><a href="#"><i class="fa fa-envelope-o"></i> eshop@gmail.com</a></li>
+				<li><a href="#"><i class="fa fa-map-marker"></i> Ratnachowk, Pokhara</a></li>
+			</ul>
+			<ul class="header-links pull-right">
+				<li><a href="#"><i class="fa fa-ruppee"></i> NRS</a></li>
+				<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- /TOP HEADER -->
 
-			<!-- TOP HEADER -->
-			<div id="top-header">
-				<div class="container">
-					<ul class="header-links pull-left">
-						<li><a href="#"><i class="fa fa-phone"></i> +977 9847741752</a></li>
-						<li><a href="#"><i class="fa fa-envelope-o"></i> eshop@gmail.com</a></li>
-						<li><a href="#"><i class="fa fa-map-marker"></i> Ratnachowk, Pokhara</a></li>
-					</ul>
-					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-ruppee"></i> NRS</a></li>
-						<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
-					</ul>
-				</div>
+	<!-- NAVIGATION -->
+	<nav id="navigation">
+		<!-- container -->
+		<div class="container">
+			<!-- responsive-nav -->
+			<div id="responsive-nav">
+				<!-- NAV -->
+				<ul class="main-nav nav navbar-nav">
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="#">Hot Deals</a></li>
+					<li><a href="#">Categories</a></li>
+					<li><a href="#">Summer Collections</a></li>
+					<li><a href="#">Summer Collections</a></li>
+					<li><a href="#">Footwear</a></li>
+					<li><a href="#">Bags</a></li>
+					<li><a href="#">Accessories</a></li>
+				</ul>
+				<!-- /NAV -->
 			</div>
-			<!-- /TOP HEADER -->
+			<!-- /responsive-nav -->
+		</div>
+		<!-- /container -->
+	</nav>
+	<!-- /NAVIGATION -->
+	
+	<!-- MAIN HEADER -->
+	<div id="header">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- LOGO -->
+				<div class="col-md-3">
+					<div class="header-logo">
+						<a href="#" class="logo">
+							<img src="./img/logo.png" alt="">
+						</a>
+					</div>
+				</div>
+				<!-- /LOGO -->
 
-			<!-- MAIN HEADER -->
-			<div id="header">
-				<!-- container -->
-				<div class="container">
-					<!-- row -->
-					<div class="row">
-						<!-- LOGO -->
-						<div class="col-md-3">
-							<div class="header-logo">
-								<a href="#" class="logo">
-									<img src="./img/logo.png" alt="">
-								</a>
-							</div>
+				<!-- SEARCH BAR -->
+				<div class="col-md-6">
+					<div class="header-search">
+						<form>
+							<select class="input-select">
+								<option value="0">All Categories</option>
+								<option value="1">Hot Deals</option>
+								<option value="2">Summer Collection</option>
+								<option value="3">Winter Collectiom</option>
+								<option value="4">Footwear </option>
+								<option value="5">Bags </option>
+								<option value="6">Accessories</option>
+							</select>
+							<input class="input" placeholder="Search here">
+							<button class="search-btn">Search</button>	
+						</form>
+					</div>
+				</div>
+				<!-- /SEARCH BAR -->
+
+				<!-- ACCOUNT -->
+				<div class="col-md-3 clearfix">
+					<div class="header-ctn">
+						<!-- Wishlist -->
+						<div>
+							<a href="#">
+								<i class="fa fa-heart-o"></i>
+								<span>Your Wishlist</span>
+								<div class="qty">2</div>
+							</a>
 						</div>
-						<!-- /LOGO -->
+						<!-- /Wishlist -->
 
-						<!-- SEARCH BAR -->
-						<div class="col-md-6">
-							<div class="header-search">
-								<form>
-									<select class="input-select">
-										<option value="0">All Categories</option>
-										<option value="1">Hot Deals</option>
-										<option value="2">Summer Collection</option>
-										<option value="3">Winter Collectiom</option>
-										<option value="4">Footwear </option>
-										<option value="5">Bags </option>
-										<option value="6">Accessories</option>
-									</select>
-									<input class="input" placeholder="Search here">
-									<button class="search-btn">Search</button>
-								</form>
-							</div>
-						</div>
-						<!-- /SEARCH BAR -->
-
-						<!-- ACCOUNT -->
-						<div class="col-md-3 clearfix">
-							<div class="header-ctn">
-								<!-- Wishlist -->
-								<div>
-									<a href="#">
-										<i class="fa fa-heart-o"></i>
-										<span>Your Wishlist</span>
-										<div class="qty">2</div>
-									</a>
-								</div>
-								<!-- /Wishlist -->
-
-								<!-- Cart -->
-								<div class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-										<i class="fa fa-shopping-cart"></i>
-										<span>Your Cart</span>
-										<div class="qty">3</div>
-									</a>
-									<div class="cart-dropdown">
-										<div class="cart-list">
-											<div class="product-widget">
-												<div class="product-img">
-													<img src="./img/product01.png" alt="">
-												</div>
-												<div class="product-body">
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-												</div>
-												<button class="delete"><i class="fa fa-close"></i></button>
-											</div>
-
-											<div class="product-widget">
-												<div class="product-img">
-													<img src="./img/product02.png" alt="">
-												</div>
-												<div class="product-body">
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-												</div>
-												<button class="delete"><i class="fa fa-close"></i></button>
-											</div>
+						<!-- Cart -->
+						<div class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+								<i class="fa fa-shopping-cart"></i>
+								<span>Your Cart</span>
+								<div class="qty">3</div>
+							</a>
+							<div class="cart-dropdown">
+								<div class="cart-list">
+									<div class="product-widget">
+										<div class="product-img">
+											<img src="./img/product01.png" alt="">
 										</div>
-										<div class="cart-summary">
-											<small>3 Item(s) selected</small>
-											<h5>SUBTOTAL: $2940.00</h5>
+										<div class="product-body">
+											<h3 class="product-name"><a href="#">product name goes here</a></h3>
+											<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
 										</div>
-										<div class="cart-btns">
-											<a href="#">View Cart</a>
-											<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+										<button class="delete"><i class="fa fa-close"></i></button>
+									</div>
+
+									<div class="product-widget">
+										<div class="product-img">
+											<img src="./img/product02.png" alt="">
 										</div>
+										<div class="product-body">
+											<h3 class="product-name"><a href="#">product name goes here</a></h3>
+											<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
+										</div>
+										<button class="delete"><i class="fa fa-close"></i></button>
 									</div>
 								</div>
-								<!-- /Cart -->
-
-								<!-- Menu Toogle -->
-								<div class="menu-toggle">
-									<a href="#">
-										<i class="fa fa-bars"></i>
-										<span>Menu</span>
-									</a>
+								<div class="cart-summary">
+									<small>3 Item(s) selected</small>
+									<h5>SUBTOTAL: $2940.00</h5>
 								</div>
-								<!-- /Menu Toogle -->
+								<div class="cart-btns">
+									<a href="#">View Cart</a>
+									<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+								</div>
 							</div>
 						</div>
-						<!-- /ACCOUNT -->
-					</div>
-					<!-- row -->
-				</div>
-				<!-- container -->
-			</div>
-			<!-- /MAIN HEADER -->
-		</header>
-		<!-- /HEADER -->
+						<!-- /Cart -->
 
-		<!-- NAVIGATION -->
-		<nav id="navigation">
-			<!-- container -->
-			<div class="container">
-				<!-- responsive-nav -->
-				<div id="responsive-nav">
-					<!-- NAV -->
-					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#">Hot Deals</a></li>
-						<li><a href="#">Categories</a></li>
-						<li><a href="#">Summer Collections</a></li>
-						<li><a href="#">Summer Collections</a></li>
-						<li><a href="#">Footwear</a></li>
-						<li><a href="#">Bags</a></li>
-						<li><a href="#">Accessories</a></li>
-					</ul>
-					<!-- /NAV -->
+						<!-- Menu Toogle -->
+						<div class="menu-toggle">
+							<a href="#">
+								<i class="fa fa-bars"></i>
+								<span>Menu</span>
+							</a>
+						</div>
+						<!-- /Menu Toogle -->
+					</div>
 				</div>
-				<!-- /responsive-nav -->
+				<!-- /ACCOUNT -->
 			</div>
-			<!-- /container -->
-		</nav>
-		<!-- /NAVIGATION -->
+			<!-- row -->
+		</div>
+		<!-- container -->
+	</div>
+	<!-- /MAIN HEADER -->
+</header>
+<!-- /HEADER -->
+
+	

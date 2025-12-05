@@ -7,14 +7,14 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('index') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"/>
                     </a>
                 </div>
 
                 <!-- Desktop Links -->
                 <div class="hidden sm:flex sm:space-x-6 sm:ms-10">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Home</x-nav-link>
+                    <x-nav-link :href="route('index')" :active="request()->routeIs('index')">Home</x-nav-link>
                     <x-nav-link href="#">Hot Deals</x-nav-link>
                     <x-nav-link href="#">Summer Collection</x-nav-link>
                     <x-nav-link href="#">Winter Collection</x-nav-link>
@@ -33,9 +33,11 @@
                         </button>
                         <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
                              class="absolute mt-2 w-48 bg-white dark:bg-gray-700 shadow-lg rounded-md py-2 z-50">
-                            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Category 1</a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Category 2</a>
-                            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Category 3</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Summer Collection</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Winter Collection</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Footwear</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Bags</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Accessories</a>
                         </div>
                     </div>
                 </div>
@@ -81,7 +83,7 @@
     <!-- Mobile Menu -->
     <div :class="{'block': open, 'hidden': !open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Home</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">Home</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Hot Deals</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Summer Collection</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Winter Collection</x-responsive-nav-link>
