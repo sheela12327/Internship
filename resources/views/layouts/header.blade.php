@@ -38,10 +38,12 @@
 								<form>
 									<select class="input-select">
 										<option value="0">All Categories</option>
-										<option value="1">Womens Fashion</option>
-										<option value="1">Mens Fashion</option>
-										<option value="1">Kids Wear</option>
-										<option value="1">Accessories </option>
+										<option value="1">Hot Deals</option>
+										<option value="2">Summer Collection</option>
+										<option value="3">Winter Collectiom</option>
+										<option value="4">Footwear </option>
+										<option value="5">Bags </option>
+										<option value="6">Accessories</option>
 									</select>
 									<input class="input" placeholder="Search here">
 									<button class="search-btn">Search</button>
