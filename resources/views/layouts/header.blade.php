@@ -51,7 +51,7 @@
 					<li><a href="#">Hot Deals</a></li>
 					<li><a href="#">Categories</a></li>
 					<li><a href="#">Summer Collections</a></li>
-					<li><a href="#">Summer Collections</a></li>
+					<li><a href="#">Winter Collections</a></li>
 					<li><a href="#">Footwear</a></li>
 					<li><a href="#">Bags</a></li>
 					<li><a href="#">Accessories</a></li>

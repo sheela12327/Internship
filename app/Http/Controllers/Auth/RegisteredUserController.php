@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'user_type' => 'customer',
+            'role' => 'customer', 
         ]);
 
         event(new Registered($user));
@@ -47,10 +47,10 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Redirect based on role
-        if ($user->user_type === 'admin') {
+        if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         } else {
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }
     }
 }
