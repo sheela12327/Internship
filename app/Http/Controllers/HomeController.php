@@ -8,17 +8,20 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth'); 
+        $this->middleware('auth'); // only authenticated users
     }
 
+    // Customer dashboard / home page
     public function index1()
     {
         $user = Auth::user();
 
+        // Redirect admin to admin dashboard
         if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
 
-        return view('home'); // customer dashboard or homepage
+        // Normal customer view
+        return view('home'); 
     }
 }

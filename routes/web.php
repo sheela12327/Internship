@@ -21,7 +21,7 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 // Authenticated (customer)
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/home', [HomeController::class, 'index1'])->name('home1');
+    Route::get('/home', [HomeController::class, 'index1'])->name('home');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -29,9 +29,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Admin Panel
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
-    Route::get('/dashboard', [HomeController::class, 'index1'])->name('admin.dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
      // Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
