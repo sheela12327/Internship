@@ -14,12 +14,12 @@
                 <!-- ACCOUNT DROPDOWN -->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-user-o"></i> {{ Auth::user()->name }}
+                        <i class="fa fa-user-o"></i> {{ Auth::user()->name }} 
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ route('profile.edit') }}"><i class="fa fa-user"></i> Profile</a></li>
 
-                        <li>
+                        <li> 
                             <a href="{{ route('logout') }}"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="fa fa-sign-out"></i> Logout
@@ -48,13 +48,10 @@
 				<!-- NAV -->
 				<ul class="main-nav nav navbar-nav">
 					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#">Hot Deals</a></li>
+					<li><a href="#">About Us</a></li>
 					<li><a href="#">Categories</a></li>
-					<li><a href="#">Summer Collections</a></li>
-					<li><a href="#">Summer Collections</a></li>
-					<li><a href="#">Footwear</a></li>
-					<li><a href="#">Bags</a></li>
-					<li><a href="#">Accessories</a></li>
+					<li><a href="#">Contact Us</a></li>
+					<li><a href="#">Shop</a></li>
 				</ul>
 				<!-- /NAV -->
 			</div>
@@ -84,16 +81,7 @@
 				<div class="col-md-6">
 					<div class="header-search">
 						<form>
-							<select class="input-select">
-								<option value="0">All Categories</option>
-								<option value="1">Hot Deals</option>
-								<option value="2">Summer Collection</option>
-								<option value="3">Winter Collectiom</option>
-								<option value="4">Footwear </option>
-								<option value="5">Bags </option>
-								<option value="6">Accessories</option>
-							</select>
-							<input class="input" placeholder="Search here">
+							<input class="input" placeholder="Search here" class="search">
 							<button class="search-btn">Search</button>	
 						</form>
 					</div>
