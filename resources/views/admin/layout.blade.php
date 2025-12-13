@@ -86,16 +86,16 @@
                 Logout
             </button>
         </form>
-        <!-- Top Bar -->
+
+    </div>
+
+     <!-- Top Bar -->
         <div class="topbar d-flex justify-content-between align-items-center">
             <h6 class="mb-0">Dashboard</h6>
             <span class="text-muted">
                 {{ Auth::user()->name }}
             </span>
         </div>
-
-    </div>
-
     <!-- MAIN CONTENT -->
     <div class="content">
         @yield('pagecontent')

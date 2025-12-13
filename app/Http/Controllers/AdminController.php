@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -15,6 +19,11 @@ class AdminController extends Controller
     // Admin dashboard
     public function dashboard()
     {
-        return view('admin.dashboard'); // create this Blade view
+        return view('admin.dashboard', [
+            'totalProducts' => Product::count(),
+            'totalCategories' => Category::count(),
+            'totalUsers'    => User::count(),
+            'totalOrders'  => Order::count(),
+        ]);// create this Blade view
     }
 }
