@@ -65,13 +65,14 @@
 					<!-- section title -->
 					<div class="col-md-12">
 						<div class="section-title">
-							<h3 class="title">New Products</h3>
+							<h3 class="title">Featured Products</h3>
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
-									<li class="active"><a data-toggle="tab" href="#tab1">Men Fashion</a></li>
-									<li><a data-toggle="tab" href="#tab1">Women Fashion</a></li>
-									<li><a data-toggle="tab" href="#tab1">Kids Wear</a></li>
+									<li class="active"><a data-toggle="tab" href="#tab1">Summer Colection</a></li>
+									<li><a data-toggle="tab" href="#tab1">Winter Collection</a></li>
+									<li><a data-toggle="tab" href="#tab1">FootWearr</a></li>
 									<li><a data-toggle="tab" href="#tab1">Accessories</a></li>
+									<li><a data-toggle="tab" href="#tab1">Bags</a></li>
 								</ul>
 							</div>
 						</div>

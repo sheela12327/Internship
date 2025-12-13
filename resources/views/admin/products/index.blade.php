@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('content')
+@section('pagecontent')
 
 <div class="container mt-4">
 
