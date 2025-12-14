@@ -78,6 +78,14 @@
             📦 Products
         </a>
 
+        <a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+            📦 Orders
+        </a>
+
+        <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+            👤 Users
+        </a>
+   
         <hr class="text-secondary mx-3">
 
         <form method="POST" action="{{ route('logout') }}" class="px-3">

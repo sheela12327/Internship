@@ -7,6 +7,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -48,6 +49,23 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('admin.products.delete');
+
+     // ================= ORDERS =================
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('admin.orders.index');
+    Route::get('/orders/view/{id}', [OrderController::class, 'show'])
+        ->name('admin.orders.view');
+    Route::post('/orders/update-status/{id}', [OrderController::class, 'updateStatus'])
+        ->name('admin.orders.updateStatus');
+
+
+    // ================= USERS =================
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('admin.users.index');
+    Route::get('/users/view/{id}', [UserController::class, 'show'])
+        ->name('admin.users.view');
+    Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])
+        ->name('admin.users.delete');
 
 });
 
