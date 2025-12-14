@@ -52,6 +52,11 @@
 					<li><a href="#">Categories</a></li>
 					<li><a href="#">Contact Us</a></li>
 					<li><a href="#">Shop</a></li>
+					<li><a href="#">Summer Collections</a></li>
+					<li><a href="#">Winter Collections</a></li>
+					<li><a href="#">Footwear</a></li>
+					<li><a href="#">Bags</a></li>
+					<li><a href="#">Accessories</a></li>
 				</ul>
 				<!-- /NAV -->
 			</div>
