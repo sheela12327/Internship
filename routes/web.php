@@ -7,6 +7,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,7 +22,7 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 // Authenticated (customer)
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/home', [HomeController::class, 'index1'])->name('home1');
+    Route::get('/home', [HomeController::class, 'index1'])->name('home');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -29,11 +30,11 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Admin Panel
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
-    Route::get('/dashboard', [HomeController::class, 'index1'])->name('admin.dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-     // Categories
+    // Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
     Route::post('/categories/store', [CategoryController::class, 'store'])->name('admin.categories.store');
@@ -48,6 +49,23 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('admin.products.delete');
+
+     // ================= ORDERS =================
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('admin.orders.index');
+    Route::get('/orders/view/{id}', [OrderController::class, 'show'])
+        ->name('admin.orders.view');
+    Route::post('/orders/update-status/{id}', [OrderController::class, 'updateStatus'])
+        ->name('admin.orders.updateStatus');
+
+
+    // ================= USERS =================
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('admin.users.index');
+    Route::get('/users/view/{id}', [UserController::class, 'show'])
+        ->name('admin.users.view');
+    Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])
+        ->name('admin.users.delete');
 
 });
 
