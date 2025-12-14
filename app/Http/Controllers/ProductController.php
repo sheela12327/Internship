@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -32,15 +33,35 @@ class ProductController extends Controller
             'price'       => 'required|numeric',
             'stock'       => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        Product::create([
+        $imageName = null;
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->storeAs('products', $imageName, 'public');
+        }
+
+        $product = Product::create([
             'name'        => $request->name,
             'description' => $request->description,
             'price'       => $request->price,
             'stock'       => $request->stock,
             'category_id' => $request->category_id,
+            'image'       => $imageName,
         ]);
+
+        return response()->json([
+            'id'            => $product->id,
+            'name'          => $product->name,
+            'description'   => $product->description,
+            'price'         => $product->price,
+            'stock'         => $product->stock,
+            'category_id'   => $product->category_id,
+            'category_name' => $product->category->name,
+            'image'         => $product->image,
+        ]);
+
 
         return back()->with('success', 'Product added successfully!');
     }
@@ -61,9 +82,21 @@ class ProductController extends Controller
             'price'       => 'required|numeric',
             'stock'       => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $product = Product::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            // delete old image if exists
+            if ($product->image && Storage::disk('public')->exists('products/'.$product->image)) {
+                Storage::disk('public')->delete('products/'.$product->image);
+            }
+
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->storeAs('products', $imageName, 'public');
+            $product->image = $imageName;
+        }
 
         $product->update([
             'name'        => $request->name,
@@ -79,7 +112,14 @@ class ProductController extends Controller
     // Delete product
     public function destroy($id)
     {
-        Product::findOrFail($id)->delete();
+        $product = Product::findOrFail($id);
+
+        // delete image if exists
+        if ($product->image && Storage::disk('public')->exists('products/'.$product->image)) {
+            Storage::disk('public')->delete('products/'.$product->image);
+        }
+
+        $product->delete();
 
         return back()->with('success', 'Product deleted successfully!');
     }
