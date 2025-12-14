@@ -84,7 +84,7 @@
     <div :class="{'block': open, 'hidden': !open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">Home</x-responsive-nav-link>
-            <x-responsive-nav-link href="#">Hot Deals</x-responsive-nav-link>
+            <x-responsive-nav-link href="#">About Us</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Summer Collection</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Winter Collection</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Footwear</x-responsive-nav-link>

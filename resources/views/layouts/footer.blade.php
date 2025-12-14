@@ -21,7 +21,6 @@
 							<div class="footer">
 								<h3 class="footer-title">Categories</h3>
 								<ul class="footer-links">
-									<li><a href="#">Hot deals</a></li>
 									<li><a href="#">Summer Collection</a></li>
 									<li><a href="#">Winter Collection</a></li>
 									<li><a href="#">Footwear</a></li>
