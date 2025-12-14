@@ -149,7 +149,7 @@
 								</div>
 								<div class="cart-btns">
 									<a href="{{ route('cart') }}">View Cart</a>
-									<a href="{{ route('checkout') }}">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+									<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
 								</div>
 							</div>
 						</div>
