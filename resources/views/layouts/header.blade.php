@@ -17,11 +17,11 @@
                         <i class="fa fa-user-o"></i> {{ Auth::user()->name }} 
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route('profile.edit') }}"><i class="fa fa-user"></i> Profile</a></li>
+                        <li><a href="{{ route('profile.edit') }}" style="color: black"><i class="fa fa-user"></i> Profile</a></li>
 
                         <li> 
                             <a href="{{ route('logout') }}"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: black">
                                 <i class="fa fa-sign-out"></i> Logout
                             </a>
 
@@ -48,15 +48,36 @@
 				<!-- NAV -->
 				<ul class="main-nav nav navbar-nav">
 					<li class="active"><a href="{{route('home')}}">Home</a></li>
-					<li><a href="#">Hot Deals</a></li>
-					<li><a href="#">Categories</a></li>
+					<li><a href="#">About Us</a></li>
+					{{-- <li><a href="#">Categories</a></li> --}}
+					<li class="dropdown category-dropdown">
+					<a href="#" class="dropdown-toggle">
+						Categories <i class="fa fa-caret-down"></i>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Summer Collections</a></li>
+						<li><a href="#">Winter Collections</a></li>
+						<li><a href="#">Footwear</a></li>
+						<li><a href="#">Bags</a></li>
+						<li><a href="#">Accessories</a></li>
+					</ul>
+				</li>
 					<li><a href="#">Contact Us</a></li>
 					<li><a href="#">Shop</a></li>
-					<li><a href="#">Summer Collections</a></li>
-					<li><a href="#">Winter Collections</a></li>
-					<li><a href="#">Footwear</a></li>
-					<li><a href="#">Bags</a></li>
-					<li><a href="#">Accessories</a></li>
+					
+				<style>
+					.category-dropdown:hover .dropdown-menu {
+						display: block;
+						margin-top: 0;
+					}
+
+					.category-dropdown .dropdown-menu {
+						border-radius: 4px;
+						padding: 10px 0;
+					}
+
+				</style>
+
 				</ul>
 				<!-- /NAV -->
 			</div>
@@ -92,6 +113,12 @@
 					</div>
 				</div>
 				<!-- /SEARCH BAR -->
+				<style>
+					.header-search .input {
+    border-radius: 40px 0 0 40px; /* left side rounded */
+}
+
+				</style>
 
 				<!-- ACCOUNT -->
 				<div class="col-md-3 clearfix">
