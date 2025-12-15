@@ -115,8 +115,8 @@
 				<!-- /SEARCH BAR -->
 				<style>
 					.header-search .input {
-    border-radius: 40px 0 0 40px; /* left side rounded */
-}
+						border-radius: 40px 0 0 40px; /* left side rounded */
+					}
 
 				</style>
 
