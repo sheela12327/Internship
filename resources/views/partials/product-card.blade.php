@@ -16,7 +16,14 @@
                 <del class="product-old-price">Rs.{{ $product->old_price }}</del>
             @endif
         </h4>
-        <div class="product-rating"></div>
+        <div class="product-rating">
+            @php
+                $rating = $product['rating'] ?? $product->rating ?? 0;
+            @endphp
+            @for($i=1; $i<=5; $i++)
+                <i class="fa {{ $i <= $rating ? 'fa-star' : 'fa-star-o' }}"></i>
+            @endfor
+        </div>
         <div class="product-btns">
             <button class="add-to-wishlist"><i class="fa fa-heart-o"></i></button>
             <button class="add-to-compare"><i class="fa fa-exchange"></i></button>

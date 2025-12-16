@@ -101,6 +101,27 @@
 			});
 		});
 		</script>
+
+		<script>
+		document.querySelectorAll('.add-to-wishlist').forEach(btn=>{
+			btn.addEventListener('click', ()=>{
+				const product_id = btn.dataset.id;
+				fetch('{{ route("wishlist.add") }}', {
+					method:'POST',
+					headers:{'X-CSRF-TOKEN':'{{ csrf_token() }}','Content-Type':'application/json'},
+					body: JSON.stringify({product_id})
+				})
+				.then(res=>res.json())
+				.then(data=>{
+					if(data.success){
+						alert('Added to wishlist');
+						const countElem = document.getElementById('wishlist-count');
+						if(countElem) countElem.textContent = data.wishlist_count;
+					}
+				});
+			});
+		});
+		</script>
 		@yield('scripts')
 
     </body>

@@ -19,10 +19,18 @@ class CheckoutController extends Controller
 
     public function placeOrder(Request $request) {
         $cart = session()->get('cart', []);
-        if(!$cart) return redirect()->back()->with('error','Cart is empty');
+        $selected = $request->selected_products; // array of selected product IDs
+        $quantities = $request->quantities; // quantities for selected items
+
+        if(!$selected) return redirect()->back()->with('error','No product selected');
 
         $total = 0;
-        foreach($cart as $item) $total += $item['price'] * $item['qty'];
+        foreach($selected as $id){
+            if(isset($cart[$id])){
+                $cart[$id]['qty'] = $quantities[$id] ?? $cart[$id]['qty'];
+                $total += $cart[$id]['price'] * $cart[$id]['qty'];
+            }
+        }
 
         $order = Order::create([
             'user_id' => Auth::id(),
@@ -32,21 +40,28 @@ class CheckoutController extends Controller
             'payment_status' => 'pending'
         ]);
 
-        foreach($cart as $id=>$item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $id,
-                'quantity' => $item['qty'],
-                'price' => $item['price']
-            ]);
+        foreach($selected as $id){
+            if(isset($cart[$id])){
+                $item = $cart[$id];
 
-            // Update stock
-            $product = Product::find($id);
-            $product->stock -= $item['qty'];
-            $product->save();
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $id,
+                    'quantity' => $item['qty'],
+                    'price' => $item['price']
+                ]);
+
+                // Update stock
+                $product = Product::find($id);
+                $product->stock -= $item['qty'];
+                $product->save();
+
+                // Remove ordered item from session cart
+                unset($cart[$id]);
+            }
         }
 
-        session()->forget('cart');
+        session()->put('cart', $cart);
 
         // Redirect to payment
         if($request->payment_method == 'esewa') {
@@ -57,4 +72,5 @@ class CheckoutController extends Controller
 
         return redirect()->route('order.confirmation',$order->id);
     }
+
 }
