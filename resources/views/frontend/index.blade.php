@@ -112,9 +112,10 @@
 													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 												</div>
 											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-											</div>
+											<button class="add-to-cart-btn" disabled>
+												<i class="fa fa-shopping-cart"></i> add to cart
+											</button>
+
 										</div>
 										<!-- /product -->
 
@@ -142,9 +143,10 @@
 													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 												</div>
 											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-											</div>
+											<<button class="add-to-cart-btn" disabled>
+												<i class="fa fa-shopping-cart"></i> add to cart
+											</button>
+
 										</div>
 										<!-- /product -->
 
@@ -170,9 +172,10 @@
 													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 												</div>
 											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-											</div>
+											<button class="add-to-cart-btn" disabled>
+												<i class="fa fa-shopping-cart"></i> add to cart
+											</button>
+
 										</div>
 										<!-- /product -->
 									</div>
@@ -293,9 +296,10 @@
 													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 												</div>
 											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-											</div>
+											<button class="add-to-cart-btn" disabled>
+												<i class="fa fa-shopping-cart"></i> add to cart
+											</button>
+
 										</div>
 										<!-- /product -->
 
@@ -324,9 +328,10 @@
 													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 												</div>
 											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-											</div>
+											<button class="add-to-cart-btn" disabled>
+												<i class="fa fa-shopping-cart"></i> add to cart
+											</button>
+
 										</div>
 										<!-- /product -->
 
@@ -350,9 +355,10 @@
 													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 												</div>
 											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-											</div>
+											<button class="add-to-cart-btn" disabled>
+												<i class="fa fa-shopping-cart"></i> add to cart
+											</button>
+
 										</div>
 										<!-- /product -->
 
@@ -378,9 +384,10 @@
 													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 												</div>
 											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-											</div>
+											<button class="add-to-cart-btn" disabled>
+												<i class="fa fa-shopping-cart"></i> add to cart
+											</button>
+
 										</div>
 										<!-- /product -->
 
@@ -406,9 +413,10 @@
 													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 												</div>
 											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-											</div>
+											<button class="add-to-cart-btn" disabled>
+												<i class="fa fa-shopping-cart"></i> add to cart
+											</button>
+
 										</div>
 										<!-- /product -->
 									</div>

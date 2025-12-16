@@ -20,12 +20,15 @@
                 <th>Category</th>
                 <th>Price (Rs)</th>
                 <th>Stock</th>
+                <th>Featured</th>
+                <th>Hot Deal</th>
+                <th>Top Selling</th>
                 <th>Action</th>
                 <th>Image</th>
             </tr>
-        </thead>
+            </thead>
 
-        <tbody>
+            <tbody>
             @foreach($products as $key => $p)
             <tr>
                 <td>{{ $key+1 }}</td>
@@ -34,8 +37,11 @@
                 <td>{{ $p->price }}</td>
                 <td>{{ $p->stock }}</td>
 
-                <td>
+                <td>{!! $p->is_featured ? '✅' : '❌' !!}</td>
+                <td>{!! $p->is_hot_deal ? '🔥' : '❌' !!}</td>
+                <td>{!! $p->is_top_selling ? '⭐' : '❌' !!}</td>
 
+                <td>
                     <button class="btn btn-sm btn-warning editProductBtn"
                         data-id="{{ $p->id }}"
                         data-name="{{ $p->name }}"
@@ -43,31 +49,31 @@
                         data-price="{{ $p->price }}"
                         data-stock="{{ $p->stock }}"
                         data-category="{{ $p->category_id }}"
+                        data-featured="{{ $p->is_featured }}"
+                        data-hot="{{ $p->is_hot_deal }}"
+                        data-top="{{ $p->is_top_selling }}"
                         data-image="{{ $p->image }}">
                         Edit
                     </button>
 
-                    <form action="{{ route('admin.products.delete', $p->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-sm btn-danger"
-                            onclick="return confirm('Delete this product?')">
-                            Delete
-                        </button>
-                    </form>
-
+                   <button type="button"
+                        class="btn btn-sm btn-danger deleteProductBtn"
+                        data-id="{{ $p->id }}">
+                        Delete
+                    </button>
                 </td>
 
                 <td>
                     @if($p->image)
-                        <img src="{{ asset('storage/products/'.$p->image) }}" width="60">
+                        <img src="{{ asset('storage/'.$p->image) }}" width="60">
                     @else
                         <span class="text-muted">No Image</span>
                     @endif
                 </td>
             </tr>
             @endforeach
-        </tbody>
+            </tbody>
+
 
     </table>
 </div>
@@ -115,6 +121,13 @@
                         <input type="number" name="stock" class="form-control">
                     </div>
 
+                    <div class="col-md-12 mt-3">
+                        <label>Product Type</label><br>
+                        <input type="checkbox" name="is_featured"> Featured
+                        <input type="checkbox" name="is_hot_deal"> Hot Deal
+                        <input type="checkbox" name="is_top_selling"> Top Selling
+                    </div>
+
                     <div class="col-md-6 mt-3">
                         <label>Product Image</label>
                         <input type="file" name="image" class="form-control">
@@ -136,6 +149,7 @@
     <div class="modal-dialog modal-lg">
         <form action="" method="POST" id="productEditForm" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="modal-content">
                 <div class="modal-header">
                     <h5>Edit Product</h5>
@@ -172,6 +186,14 @@
                         <label>Stock</label>
                         <input type="number" id="edit_stock" name="stock" class="form-control">
                     </div>
+
+                    <div class="col-md-12 mt-3">
+                        <label>Product Type</label><br>
+                        <input type="checkbox" id="edit_featured" name="is_featured"> Featured
+                        <input type="checkbox" id="edit_hot" name="is_hot_deal"> Hot Deal
+                        <input type="checkbox" id="edit_top" name="is_top_selling"> Top Selling
+                    </div>
+
 
                     <div class="col-md-12 mt-3">
                         <label>Current Image</label><br>
@@ -218,34 +240,52 @@ $('#addProductModal form').submit(function(e){
             // Prepare new table row
             let lastIndex = $('table tbody tr').length + 1;
             let newRow = `
-                <tr>
-                    <td>${lastIndex}</td>
-                    <td>${response.name}</td>
-                    <td>${response.category_name}</td>
-                    <td>${response.price}</td>
-                    <td>${response.stock}</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning editProductBtn"
-                            data-id="${response.id}"
-                            data-name="${response.name}"
-                            data-description="${response.description}"
-                            data-price="${response.price}"
-                            data-stock="${response.stock}"
-                            data-category="${response.category_id}"
-                            data-image="${response.image}">
-                            Edit
+            <tr>
+                <td>${lastIndex}</td>
+                <td>${response.name}</td>
+                <td>${response.category_name}</td>
+                <td>${response.price}</td>
+                <td>${response.stock}</td>
+
+                <td>${response.is_featured ? '✅' : '❌'}</td>
+                <td>${response.is_hot_deal ? '🔥' : '❌'}</td>
+                <td>${response.is_top_selling ? '⭐' : '❌'}</td>
+
+                <td>
+                    <button class="btn btn-sm btn-warning editProductBtn"
+                        data-id="${response.id}"
+                        data-name="${response.name}"
+                        data-description="${response.description}"
+                        data-price="${response.price}"
+                        data-stock="${response.stock}"
+                        data-category="${response.category_id}"
+                        data-featured="${response.is_featured}"
+                        data-hot="${response.is_hot_deal}"
+                        data-top="${response.is_top_selling}"
+                        data-image="${response.image}">
+                        Edit
+                    </button>
+
+                    <form action="/admin/products/${response.id}" method="POST" class="d-inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="_method" value="DELETE">
+
+                        <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Delete this product?')">
+                            Delete
                         </button>
-                        <form action="/admin/products/delete/${response.id}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this product?')">Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        ${response.image ? `<img src="/storage/products/${response.image}" width="60">` : '<span class="text-muted">No Image</span>'}
-                    </td>
-                </tr>
+                    </form>
+
+                </td>
+
+                <td>
+                    ${response.image 
+                        ? `<img src="/storage/${response.image}" width="60">` 
+                        : '<span class="text-muted">No Image</span>'}
+                </td>
+            </tr>
             `;
+
 
             $('table tbody').append(newRow);
 
@@ -262,10 +302,13 @@ $('#addProductModal form').submit(function(e){
 // Rebind Edit Button click for dynamically added rows
 function bindEditButtons(){
     $('.editProductBtn').off('click').on('click', function () {
-        let id = $(this).data('id');
-        let image = $(this).data('image');
 
-        $('#productEditForm').attr('action', '/admin/products/update/' + id);
+        let id = $(this).data('id');
+
+        $('#productEditForm').attr(
+            'action',
+            "{{ url('admin/products') }}/" + id
+        );
 
         $('#edit_name').val($(this).data('name'));
         $('#edit_description').val($(this).data('description'));
@@ -273,18 +316,48 @@ function bindEditButtons(){
         $('#edit_stock').val($(this).data('stock'));
         $('#edit_category').val($(this).data('category'));
 
+        $('#edit_featured').prop('checked', $(this).data('featured') == 1);
+        $('#edit_hot').prop('checked', $(this).data('hot') == 1);
+        $('#edit_top').prop('checked', $(this).data('top') == 1);
+
+        let image = $(this).data('image');
         if(image){
-            $('#edit_image_preview').attr('src', '/storage/products/' + image);
-        } else {
-            $('#edit_image_preview').attr('src', '');
+            $('#edit_image_preview').attr('src', '/storage/' + image);
+        }else{
+            $('#edit_image_preview').attr('src','');
         }
 
         $('#editProductModal').modal('show');
     });
 }
-
-// initial bind
 bindEditButtons();
 
+$(document).on('click', '.deleteProductBtn', function () {
+
+    if (!confirm('Delete this product?')) {
+        return;
+    }
+
+    let button = $(this);
+    let productId = button.data('id');
+
+    $.ajax({
+        url: "{{ url('admin/products') }}/" + productId,
+        type: "POST",
+        data: {
+            _token: "{{ csrf_token() }}",
+            _method: "DELETE"
+        },
+        success: function () {
+            button.closest('tr').fadeOut(300, function () {
+                $(this).remove();
+            });
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
+            alert('Delete failed');
+        }
+    });
+});
 </script>
 @endsection

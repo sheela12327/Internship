@@ -13,35 +13,39 @@ class HomeController extends Controller
         $this->middleware('auth'); // only authenticated users
     }
 
-    // Customer dashboard / home page
     public function index1()
     {
         $user = Auth::user();
 
-        // Redirect admin to admin dashboard
         if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
 
-        // Normal customer view
-        return view('home'); 
-    }
+        // Fetch all categories
+        $categories = Category::all();
 
-    public function index()
-    {
-        $categories = Category::where('status',1)->get();
+        // Featured, Hot Deals, Top Selling
+        $featuredProducts = Product::active()->where('is_featured', 1)->latest()->take(6)->get();
+        $hotDeals = Product::active()->where('is_hot_deal', 1)->latest()->take(6)->get();
+        $topSelling = Product::active()->where('is_top_selling', 1)->latest()->take(6)->get();
 
-        $featuredProducts = Product::where('status',1)
-            ->where('is_featured',1)->latest()->take(6)->get();
-
-        $hotDeals = Product::where('status',1)
-            ->where('is_hot_deal',1)->latest()->take(6)->get();
-
-        $topSelling = Product::where('status',1)
-            ->where('is_top_selling',1)->latest()->take(6)->get();
+        // Products grouped by category dynamically
+        $productsByCategory = [];
+        foreach ($categories as $category) {
+            $key = strtolower($category->slug); // or use name
+            $productsByCategory[$key] = Product::active()
+                ->where('category_id', $category->id)
+                ->take(6)
+                ->get();
+        }
 
         return view('home', compact(
-            'featuredProducts','hotDeals','topSelling'
+            'categories',
+            'featuredProducts',
+            'hotDeals',
+            'topSelling',
+            'productsByCategory'
         ));
     }
+
 }

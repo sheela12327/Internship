@@ -56,50 +56,52 @@
 
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script>
-		$(document).ready(function(){
-			// Add to Cart
-			$('.add-to-cart-btn').click(function(e){
-				e.preventDefault();
-				let product_id = $(this).data('id');
+		$(document).on('click', '.add-to-cart-btn', function (e) {
+			e.preventDefault();
 
-				$.ajax({
-					url: "{{ route('cart.add') }}",
-					type: "POST",
-					data: {
-						_token: "{{ csrf_token() }}",
-						product_id: product_id
-					},
-					success: function(response){
-						if(response.success){
-							$('.header-ctn .qty').text(response.cart_count); // Update cart count in header
-							alert('Product added to cart!');
-						}
+			let product_id = $(this).data('id');
+
+			$.ajax({
+				url: "{{ route('cart.add') }}",
+				type: "POST",
+				data: {
+					_token: "{{ csrf_token() }}",
+					product_id: product_id,
+					qty: 1
+				},
+				success: function (response) {
+					if (response.status) {
+						$('.cart-count').text(response.cart_count ?? 0);
+						alert('Product added to cart');
+					} else {
+						alert(response.message);
 					}
-				});
+				}
 			});
+		});
 
-			// Add to Wishlist
-			$('.add-to-wishlist').click(function(e){
-				e.preventDefault();
-				let product_id = $(this).data('id');
+		$(document).on('click', '.add-to-wishlist', function (e) {
+			e.preventDefault();
 
-				$.ajax({
-					url: "{{ route('wishlist.add') }}",
-					type: "POST",
-					data: {
-						_token: "{{ csrf_token() }}",
-						product_id: product_id
-					},
-					success: function(response){
-						if(response.success){
-							$('.header-ctn .qty').text(response.wishlist_count); // Update wishlist count
-							alert('Product added to wishlist!');
-						}
+			let product_id = $(this).data('id');
+
+			$.ajax({
+				url: "{{ route('wishlist.add') }}",
+				type: "POST",
+				data: {
+					_token: "{{ csrf_token() }}",
+					product_id: product_id
+				},
+				success: function (response) {
+					if (response.status) {
+						$('.wishlist-count').text(response.wishlist_count ?? 0);
+						alert('Added to wishlist');
 					}
-				});
+				}
 			});
 		});
 		</script>
+		@yield('scripts')
 
     </body>
 </html>
