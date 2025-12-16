@@ -54,5 +54,52 @@
 		<script src="{{asset('frontend/js/jquery.zoom.min.js')}}"></script>
 		<script src="{{asset('frontend/js/main.js')}}"></script>
 
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+		$(document).ready(function(){
+			// Add to Cart
+			$('.add-to-cart-btn').click(function(e){
+				e.preventDefault();
+				let product_id = $(this).data('id');
+
+				$.ajax({
+					url: "{{ route('cart.add') }}",
+					type: "POST",
+					data: {
+						_token: "{{ csrf_token() }}",
+						product_id: product_id
+					},
+					success: function(response){
+						if(response.success){
+							$('.header-ctn .qty').text(response.cart_count); // Update cart count in header
+							alert('Product added to cart!');
+						}
+					}
+				});
+			});
+
+			// Add to Wishlist
+			$('.add-to-wishlist').click(function(e){
+				e.preventDefault();
+				let product_id = $(this).data('id');
+
+				$.ajax({
+					url: "{{ route('wishlist.add') }}",
+					type: "POST",
+					data: {
+						_token: "{{ csrf_token() }}",
+						product_id: product_id
+					},
+					success: function(response){
+						if(response.success){
+							$('.header-ctn .qty').text(response.wishlist_count); // Update wishlist count
+							alert('Product added to wishlist!');
+						}
+					}
+				});
+			});
+		});
+		</script>
+
     </body>
 </html>

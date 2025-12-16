@@ -21,6 +21,7 @@
                 <th>Price (Rs)</th>
                 <th>Stock</th>
                 <th>Action</th>
+                <th>Image</th>
             </tr>
         </thead>
 
@@ -32,6 +33,7 @@
                 <td>{{ $p->category->name }}</td>
                 <td>{{ $p->price }}</td>
                 <td>{{ $p->stock }}</td>
+
                 <td>
 
                     <button class="btn btn-sm btn-warning editProductBtn"
@@ -40,7 +42,8 @@
                         data-description="{{ $p->description }}"
                         data-price="{{ $p->price }}"
                         data-stock="{{ $p->stock }}"
-                        data-category="{{ $p->category_id }}">
+                        data-category="{{ $p->category_id }}"
+                        data-image="{{ $p->image }}">
                         Edit
                     </button>
 
@@ -54,6 +57,14 @@
                     </form>
 
                 </td>
+
+                <td>
+                    @if($p->image)
+                        <img src="{{ asset('storage/products/'.$p->image) }}" width="60">
+                    @else
+                        <span class="text-muted">No Image</span>
+                    @endif
+                </td>
             </tr>
             @endforeach
         </tbody>
@@ -64,7 +75,7 @@
 <!-- ADD PRODUCT MODAL -->
 <div class="modal fade" id="addProductModal">
     <div class="modal-dialog modal-lg">
-        <form action="{{ route('admin.products.store') }}" method="POST">
+        <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -103,6 +114,11 @@
                         <label>Stock</label>
                         <input type="number" name="stock" class="form-control">
                     </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label>Product Image</label>
+                        <input type="file" name="image" class="form-control">
+                    </div>
                 </div>
 
                 <div class="modal-footer">
@@ -118,7 +134,7 @@
 <!-- EDIT PRODUCT MODAL -->
 <div class="modal fade" id="editProductModal">
     <div class="modal-dialog modal-lg">
-        <form action="" method="POST" id="productEditForm">
+        <form action="" method="POST" id="productEditForm" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -156,6 +172,17 @@
                         <label>Stock</label>
                         <input type="number" id="edit_stock" name="stock" class="form-control">
                     </div>
+
+                    <div class="col-md-12 mt-3">
+                        <label>Current Image</label><br>
+                        <img id="edit_image_preview" src="" width="100" class="mb-2">
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label>Change Image</label>
+                        <input type="file" name="image" class="form-control">
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">
@@ -171,11 +198,74 @@
 
 @section('scripts')
 <script>
-    // EDIT PRODUCT BUTTON CLICK
-    $(document).on('click', '.editProductBtn', function () {
+    // AJAX Add Product
+$('#addProductModal form').submit(function(e){
+    e.preventDefault(); // prevent normal form submit
 
+    let formData = new FormData(this);
+
+    $.ajax({
+        url: "{{ route('admin.products.store') }}",
+        method: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response){
+            // Close modal
+            $('#addProductModal').modal('hide');
+            $('#addProductModal form')[0].reset();
+
+            // Prepare new table row
+            let lastIndex = $('table tbody tr').length + 1;
+            let newRow = `
+                <tr>
+                    <td>${lastIndex}</td>
+                    <td>${response.name}</td>
+                    <td>${response.category_name}</td>
+                    <td>${response.price}</td>
+                    <td>${response.stock}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning editProductBtn"
+                            data-id="${response.id}"
+                            data-name="${response.name}"
+                            data-description="${response.description}"
+                            data-price="${response.price}"
+                            data-stock="${response.stock}"
+                            data-category="${response.category_id}"
+                            data-image="${response.image}">
+                            Edit
+                        </button>
+                        <form action="/admin/products/delete/${response.id}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this product?')">Delete</button>
+                        </form>
+                    </td>
+                    <td>
+                        ${response.image ? `<img src="/storage/products/${response.image}" width="60">` : '<span class="text-muted">No Image</span>'}
+                    </td>
+                </tr>
+            `;
+
+            $('table tbody').append(newRow);
+
+            // Optional: rebind edit button click
+            bindEditButtons();
+        },
+        error: function(err){
+            alert('Something went wrong!');
+            console.log(err);
+        }
+    });
+});
+
+// Rebind Edit Button click for dynamically added rows
+function bindEditButtons(){
+    $('.editProductBtn').off('click').on('click', function () {
         let id = $(this).data('id');
-        $('#productEditForm').attr('action', "/admin/products/update/" + id);
+        let image = $(this).data('image');
+
+        $('#productEditForm').attr('action', '/admin/products/update/' + id);
 
         $('#edit_name').val($(this).data('name'));
         $('#edit_description').val($(this).data('description'));
@@ -183,7 +273,18 @@
         $('#edit_stock').val($(this).data('stock'));
         $('#edit_category').val($(this).data('category'));
 
+        if(image){
+            $('#edit_image_preview').attr('src', '/storage/products/' + image);
+        } else {
+            $('#edit_image_preview').attr('src', '');
+        }
+
         $('#editProductModal').modal('show');
     });
+}
+
+// initial bind
+bindEditButtons();
+
 </script>
 @endsection
