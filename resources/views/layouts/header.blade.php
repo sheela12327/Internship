@@ -47,8 +47,8 @@
 			<div id="responsive-nav">
 				<!-- NAV -->
 								<ul class="main-nav nav navbar-nav">
-					<li class="{{ request()->routeIs('index') ? 'active' : '' }}">
-						<a href="{{ route('index') }}">Home</a>
+					<li class="{{ request()->routeIs('home') ? 'active' : '' }}">
+						<a href="{{ route('home') }}">Home</a>
 					</li>
 
 					<li class="{{ request()->routeIs('aboutus') ? 'active' : '' }}">

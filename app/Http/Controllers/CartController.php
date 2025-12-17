@@ -15,34 +15,45 @@ class CartController extends Controller
 
     public function add(Request $request) {
         $product = Product::find($request->product_id);
-        if(!$product) return redirect()->back()->with('error','Product not found');
+        if(!$product) return response()->json(['success'=>false, 'message'=>'Product not found']);
 
         $cart = session()->get('cart', []);
+        $qty = $request->quantity ?? 1;
 
         if(isset($cart[$product->id])){
-            $cart[$product->id]['qty'] += $request->quantity ?? 1;
+            $cart[$product->id]['qty'] += $qty;
         } else {
             $cart[$product->id] = [
                 'name' => $product->name,
                 'price' => $product->price,
                 'image' => $product->image,
-                'qty' => $request->quantity ?? 1
+                'qty' => $qty
             ];
         }
 
         session()->put('cart', $cart);
-        return redirect()->back()->with('success','Product added to cart');
+
+        return response()->json([
+            'success' => true,
+            'cart_count' => count($cart)
+        ]);
     }
 
-    public function updateQuantity(Request $request) {
-        $cart = session()->get('cart', []);
-        if(isset($cart[$request->product_id])) {
-            $cart[$request->product_id]['qty'] = $request->quantity;
-            session()->put('cart', $cart);
+    public function updateQuantity(Request $request)
+    {
+        $cart = Session::get('cart', []);
+
+        $productId = $request->product_id;
+        $quantity  = $request->quantity;
+
+        if (isset($cart[$productId])) {
+            $cart[$productId]['qty'] = $quantity;
+            Session::put('cart', $cart);
         }
-        return response()->json(['success'=>true]);
-    }
 
+        return redirect()->back()->with('success', 'Cart updated successfully');
+    }
+    
     public function remove(Request $request) {
         $cart = session()->get('cart', []);
         unset($cart[$request->product_id]);

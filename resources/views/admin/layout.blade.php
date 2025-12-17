@@ -97,13 +97,36 @@
 
     </div>
 
-     <!-- Top Bar -->
-        <div class="topbar d-flex justify-content-between align-items-center">
-            <h6 class="mb-0">Dashboard</h6>
-            <span class="text-muted">
-                {{ Auth::user()->name }}
-            </span>
+    <!-- Top Bar -->
+    <div class="topbar d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">Dashboard</h6>
+
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                👤 {{ Auth::user()->name }}
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" href="{{ route('home') }}">
+                        🏠 Customer Dashboard
+                    </a>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="dropdown-item text-danger">
+                            🚪 Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </div>
+    </div>
+
     <!-- MAIN CONTENT -->
     <div class="content">
         @yield('pagecontent')

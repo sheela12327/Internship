@@ -53,76 +53,88 @@
 		<script src="{{asset('frontend/js/nouislider.min.js')}}"></script>
 		<script src="{{asset('frontend/js/jquery.zoom.min.js')}}"></script>
 		<script src="{{asset('frontend/js/main.js')}}"></script>
-
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script>
-		$(document).on('click', '.add-to-cart-btn', function (e) {
-			e.preventDefault();
-
-			let product_id = $(this).data('id');
-
-			$.ajax({
-				url: "{{ route('cart.add') }}",
-				type: "POST",
-				data: {
-					_token: "{{ csrf_token() }}",
-					product_id: product_id,
-					qty: 1
-				},
-				success: function (response) {
-					if (response.status) {
-						$('.cart-count').text(response.cart_count ?? 0);
-						alert('Product added to cart');
-					} else {
-						alert(response.message);
-					}
-				}
-			});
-		});
-
-		$(document).on('click', '.add-to-wishlist', function (e) {
-			e.preventDefault();
-
-			let product_id = $(this).data('id');
-
-			$.ajax({
-				url: "{{ route('wishlist.add') }}",
-				type: "POST",
-				data: {
-					_token: "{{ csrf_token() }}",
-					product_id: product_id
-				},
-				success: function (response) {
-					if (response.status) {
-						$('.wishlist-count').text(response.wishlist_count ?? 0);
-						alert('Added to wishlist');
-					}
-				}
-			});
-		});
-		</script>
+		
+		@yield('scripts')
 
 		<script>
-		document.querySelectorAll('.add-to-wishlist').forEach(btn=>{
-			btn.addEventListener('click', ()=>{
-				const product_id = btn.dataset.id;
-				fetch('{{ route("wishlist.add") }}', {
-					method:'POST',
-					headers:{'X-CSRF-TOKEN':'{{ csrf_token() }}','Content-Type':'application/json'},
-					body: JSON.stringify({product_id})
-				})
-				.then(res=>res.json())
-				.then(data=>{
-					if(data.success){
-						alert('Added to wishlist');
-						const countElem = document.getElementById('wishlist-count');
-						if(countElem) countElem.textContent = data.wishlist_count;
+    	$(document).ready(function() {
+
+			// -----------------------
+			// Add to Cart AJAX
+			// -----------------------
+			$(document).on('click', '.add-to-cart-btn', function(e) {
+				e.preventDefault();
+
+				let btn = $(this);
+				let product_id = btn.data('id');
+				let name = btn.data('name') || '';
+				let price = btn.data('price') || 0;
+				let image = btn.data('image') || '';
+
+				$.ajax({
+					url: "{{ route('cart.add') }}",
+					type: "POST",
+					data: {
+						_token: "{{ csrf_token() }}",
+						product_id: product_id,
+						name: name,
+						price: price,
+						image: image,
+						quantity: 1
+					},
+					success: function(response) {
+						if(response.success){
+							// Update cart count
+							$('#cart-count').text(response.cart_count ?? 0);
+
+							// Toggle button
+							btn.html('<i class="fa fa-check"></i> Added').prop('disabled', true);
+
+							// Optional: toast instead of alert
+							// alert('Product added to cart');
+						} else {
+							alert(response.message || 'Error adding product');
+						}
+					},
+					error: function(err){
+						console.error(err);
+						alert('Something went wrong!');
 					}
 				});
 			});
+
+			// -----------------------
+			// Add to Wishlist AJAX
+			// -----------------------
+			$(document).on('click', '.add-to-wishlist', function(e) {
+				e.preventDefault();
+
+				let btn = $(this);
+				let product_id = btn.data('id');
+
+				$.ajax({
+					url: "{{ route('wishlist.add') }}",
+					type: "POST",
+					data: {
+						_token: "{{ csrf_token() }}",
+						product_id: product_id
+					},
+					success: function(response){
+						if(response.success){
+							$('#wishlist-count').text(response.wishlist_count ?? 0);
+							// Optional toast
+							// alert('Added to wishlist');
+						}
+					},
+					error: function(err){
+						console.error(err);
+						alert('Something went wrong!');
+					}
+				});
+			});
+
 		});
-		</script>
-		@yield('scripts')
+    </script>
 
     </body>
 </html>
