@@ -5,11 +5,14 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactusController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
@@ -21,18 +24,28 @@ use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('/', [IndexController::class, 'index'])->name('index');
-
+Route::get('/shop', [ShopController::class,'index'])->name('shop');
+Route::get('/product/{slug}', [ShopController::class,'show'])->name('product.detail');  
 
 // Authenticated (customer)
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index1'])->name('home');
 
-    // Cart Routes
-    Route::get('/cart', [CartController::class, 'index'])->name('cart');
-    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-    Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+    Route::get('/cart', [CartController::class,'index'])->name('cart');
+    Route::post('/cart/add', [CartController::class,'add'])->name('cart.add');
+    Route::post('/cart/update', [CartController::class,'updateQuantity'])->name('cart.update');
+    Route::post('/cart/remove', [CartController::class,'remove'])->name('cart.remove');
+
+    Route::get('/checkout', [CheckoutController::class,'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class,'placeOrder'])->name('checkout.placeOrder');
+
+    Route::post('/payment/esewa', [PaymentController::class,'esewaPayment'])->name('payment.esewa');
+    Route::post('/payment/khalti', [PaymentController::class,'khaltiPayment'])->name('payment.khalti');
+
+    Route::get('/order/confirmation/{id}', [OrderController::class,'confirmation'])->name('order.confirmation');
+
+   Route::get('/shop', [ShopController::class,'index'])->name('shop');
 
     // Wishlist Routes
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
@@ -64,7 +77,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
-    Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('admin.products.delete');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
      // ================= ORDERS =================
     Route::get('/orders', [OrderController::class, 'index'])

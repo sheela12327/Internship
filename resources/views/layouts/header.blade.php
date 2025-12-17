@@ -143,10 +143,10 @@
 					<div class="header-ctn">
 						<!-- Wishlist -->
 						<div>
-							<a href="#">
+							<a href="{{ route('wishlist') }}">
 								<i class="fa fa-heart-o"></i>
 								<span>Your Wishlist</span>
-								<div class="qty" id="wishlist-count">0</div>
+								<div class="qty" id="wishlist-count">{{ count(Session::get('wishlist', [])) }}</div>
 							</a>
 						</div>
 
@@ -167,7 +167,7 @@
 								</div>
 								<div class="cart-btns">
 									<a href="{{ route('cart') }}">View Cart</a>
-									<a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+									<a href="{{ route('checkout') }}">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
 								</div>
 							</div>
 						</div>

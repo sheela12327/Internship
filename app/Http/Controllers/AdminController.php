@@ -24,6 +24,6 @@ class AdminController extends Controller
             'totalCategories' => Category::count(),
             'totalUsers'    => User::count(),
             'totalOrders'  => Order::count(),
-        ]);// create this Blade view
+        ]);
     }
 }

@@ -9,41 +9,44 @@ use Illuminate\Support\Facades\Session;
 class CartController extends Controller
 {
     public function index() {
-        $cart = Session::get('cart', []);
+        $cart = session()->get('cart', []);
         return view('cart.index', compact('cart'));
     }
 
     public function add(Request $request) {
-        $product = Product::findOrFail($request->product_id);
-        $cart = Session::get('cart', []);
+        $product = Product::find($request->product_id);
+        if(!$product) return redirect()->back()->with('error','Product not found');
 
-        if(isset($cart[$product->id])) {
-            $cart[$product->id]['qty'] += 1;
+        $cart = session()->get('cart', []);
+
+        if(isset($cart[$product->id])){
+            $cart[$product->id]['qty'] += $request->quantity ?? 1;
         } else {
             $cart[$product->id] = [
                 'name' => $product->name,
                 'price' => $product->price,
                 'image' => $product->image,
-                'qty' => 1
+                'qty' => $request->quantity ?? 1
             ];
         }
 
-        Session::put('cart', $cart);
-        return response()->json(['success'=>true, 'cart_count'=>count($cart)]);
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success','Product added to cart');
+    }
+
+    public function updateQuantity(Request $request) {
+        $cart = session()->get('cart', []);
+        if(isset($cart[$request->product_id])) {
+            $cart[$request->product_id]['qty'] = $request->quantity;
+            session()->put('cart', $cart);
+        }
+        return response()->json(['success'=>true]);
     }
 
     public function remove(Request $request) {
-        $cart = Session::get('cart', []);
-        if(isset($cart[$request->product_id])) {
-            unset($cart[$request->product_id]);
-            Session::put('cart', $cart);
-        }
-        return response()->json(['success'=>true, 'cart_count'=>count($cart)]);
-    }
-
-    public function count() {
-        $cart = Session::get('cart', []);
-        $totalItems = array_sum(array_column($cart, 'qty'));
-        return response()->json(['count'=>$totalItems]);
+        $cart = session()->get('cart', []);
+        unset($cart[$request->product_id]);
+        session()->put('cart', $cart);
+        return response()->json(['success'=>true]);
     }
 }

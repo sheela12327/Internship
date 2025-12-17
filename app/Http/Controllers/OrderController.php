@@ -38,4 +38,9 @@ class OrderController extends Controller
 
         return back()->with('success', 'Order status updated successfully.');
     }
+
+     public function confirmation($id) {
+        $order = Order::with('items.product')->findOrFail($id);
+        return view('order.confirmation', compact('order'));
+    }
 }
