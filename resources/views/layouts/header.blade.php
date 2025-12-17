@@ -46,24 +46,37 @@
 			<!-- responsive-nav -->
 			<div id="responsive-nav">
 				<!-- NAV -->
-				<ul class="main-nav nav navbar-nav">
-					<li class="active"><a href="{{route('home')}}">Home</a></li>
-					<li><a href="#">About Us</a></li>
-					{{-- <li><a href="#">Categories</a></li> --}}
-					<li class="dropdown category-dropdown">
-					<a href="#" class="dropdown-toggle">
-						Categories <i class="fa fa-caret-down"></i>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Summer Collections</a></li>
-						<li><a href="#">Winter Collections</a></li>
-						<li><a href="#">Footwear</a></li>
-						<li><a href="#">Bags</a></li>
-						<li><a href="#">Accessories</a></li>
-					</ul>
-				</li>
-					<li><a href="#">Contact Us</a></li>
-					<li><a href="#">Shop</a></li>
+								<ul class="main-nav nav navbar-nav">
+					<li class="{{ request()->routeIs('index') ? 'active' : '' }}">
+						<a href="{{ route('index') }}">Home</a>
+					</li>
+
+					<li class="{{ request()->routeIs('aboutus') ? 'active' : '' }}">
+						<a href="{{ route('aboutus') }}">About Us</a>
+					</li>
+
+					<li class="dropdown category-dropdown {{ request()->routeIs('category.*') ? 'active' : '' }}">
+						<a href="#" class="dropdown-toggle">
+							Categories <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Summer Collections</a></li>
+							<li><a href="#">Winter Collections</a></li>
+							<li><a href="#">Footwear</a></li>
+							<li><a href="#">Bags</a></li>
+							<li><a href="#">Accessories</a></li>
+						</ul>
+					</li>
+
+					<li class="{{ request()->routeIs('contact') ? 'active' : '' }}">
+						<a href="{{ route('contact') }}">Contact Us</a>
+					</li>
+
+					<li class="{{ request()->routeIs('shop') ? 'active' : '' }}">
+						<a href="#">Shop</a>
+					</li>
+				</ul>
+
 					
 				<style>
 					.category-dropdown:hover .dropdown-menu {
@@ -75,10 +88,15 @@
 						border-radius: 4px;
 						padding: 10px 0;
 					}
+					.main-nav > li.active > a {
+						color: #D10024;              /* red */
+						/* border-bottom: 1px solid #D10024; */
+					}
+
 
 				</style>
 
-				</ul>
+				
 				<!-- /NAV -->
 			</div>
 			<!-- /responsive-nav -->

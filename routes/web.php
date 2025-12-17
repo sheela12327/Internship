@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\OrderController;
@@ -82,5 +84,11 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
         ->name('admin.users.delete');
 
 });
+
+Route::get('/contact_us', [ContactusController::class, 'contact'])
+        ->name('contact');
+
+        Route::get('/aboutus', [AboutUsController::class, 'aboutus'])
+        ->name('aboutus');
 
 require __DIR__ . '/auth.php';
