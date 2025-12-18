@@ -39,23 +39,30 @@ class Product extends Model
         return $query->where('status', 1);
     }
 
-    /**
-     * Helper: Check stock availability
-     * Used during cart & checkout
-     */
-    public function isInStock($qty = 1)
+   public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', 1);
+    }
+
+    public function scopeTopSelling($query)
+    {
+        return $query->where('is_top_selling', 1);
+    }
+
+    /* =========================
+       HELPERS
+    ==========================*/
+
+    public function isInStock($qty = 1): bool
     {
         return $this->stock >= $qty;
     }
 
     /**
-     * Helper: Final selling price
-     * Used in cart & checkout
+     * Final selling price (used everywhere)
      */
-    public function getFinalPriceAttribute()
+    public function getFinalPriceAttribute(): float
     {
-        return $this->old_price && $this->old_price > $this->price
-            ? $this->price
-            : $this->price;
+        return $this->price;
     }
 }

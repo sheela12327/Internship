@@ -14,7 +14,7 @@
 
                 <!-- Desktop Links -->
                 <div class="hidden sm:flex sm:space-x-6 sm:ms-10">
-                    <x-nav-link :href="route('index')" :active="request()->routeIs('index')">Home</x-nav-link>
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">Home</x-nav-link>
                     <x-nav-link href="#">Hot Deals</x-nav-link>
                     <x-nav-link href="#">Summer Collection</x-nav-link>
                     <x-nav-link href="#">Winter Collection</x-nav-link>
@@ -83,7 +83,7 @@
     <!-- Mobile Menu -->
     <div :class="{'block': open, 'hidden': !open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">Home</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">Home</x-responsive-nav-link>
             <x-responsive-nav-link href="#">About Us</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Summer Collection</x-responsive-nav-link>
             <x-responsive-nav-link href="#">Winter Collection</x-responsive-nav-link>

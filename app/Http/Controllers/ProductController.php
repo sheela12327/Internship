@@ -9,10 +9,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-        public function index()
+    /* =========================
+       ADMIN METHODS
+    ==========================*/
+
+    public function index()
     {
-        $products = Product::all();
+        $products = Product::with('category')->latest()->get();
         $categories = Category::all();
+
         return view('admin.products.index', compact('products','categories'));
     }
 
@@ -24,53 +29,39 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name'        => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'price' => 'nullable|numeric',
-            'stock' => 'nullable|integer',
-            'image' => 'nullable|image|max:2048',
+            'price'       => 'required|numeric',
+            'old_price'   => 'nullable|numeric',
+            'stock'       => 'required|integer',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $product = new Product();
-        $product->name = $request->name;
-        $product->category_id = $request->category_id;
-        $product->description = $request->description;
-        $product->price = $request->price ?? 0;
-        $product->stock = $request->stock ?? 0;
+        $validated['is_active']      = 1;
+        $validated['is_featured']    = $request->has('is_featured');
+        $validated['is_hot_deal']    = $request->has('is_hot_deal');
+        $validated['is_top_selling'] = $request->has('is_top_selling');
 
-        // Set flags
-        $product->is_featured = $request->has('is_featured') ? 1 : 0;
-        $product->is_hot_deal = $request->has('is_hot_deal') ? 1 : 0;
-        $product->is_top_selling = $request->has('is_top_selling') ? 1 : 0;
-
-        // Set active so it shows on homepage
-        $product->is_active = 1;
-
-        // Handle image upload
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $product->image = $path;
+            $validated['image'] = $request->file('image')->store('products','public');
         }
 
-        $product->save();
+        $product = Product::create($validated);
 
-        // Return JSON if AJAX
-        return response()->json([
-            'id' => $product->id,
-            'name' => $product->name,
-            'category_name' => $product->category->name,
-            'category_id' => $product->category_id,
-            'price' => $product->price,
-            'stock' => $product->stock,
-            'description' => $product->description,
-            'is_featured' => $product->is_featured,
-            'is_hot_deal' => $product->is_hot_deal,
-            'is_top_selling' => $product->is_top_selling,
-            'image' => $product->image,
-        ]);
+        // AJAX support
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'product' => $product->load('category')
+            ]);
+        }
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success','Product created successfully');
     }
-
 
     public function edit(Product $product)
     {
@@ -81,35 +72,71 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name'        => 'required|string',
+            'name'        => 'required|string|max:255',
             'price'       => 'required|numeric',
             'old_price'   => 'nullable|numeric',
             'stock'       => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'description' => 'nullable|string',
             'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $validated['status'] = $request->has('status');
-        $validated['is_featured'] = $request->has('is_featured');
-        $validated['is_hot_deal'] = $request->has('is_hot_deal');
+        $validated['is_active']      = $request->has('is_active');
+        $validated['is_featured']    = $request->has('is_featured');
+        $validated['is_hot_deal']    = $request->has('is_hot_deal');
         $validated['is_top_selling'] = $request->has('is_top_selling');
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+
+            // delete old image
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            $validated['image'] = $request->file('image')->store('products','public');
         }
 
         $product->update($validated);
 
-        return redirect()->route('admin.products.index')->with('success','Product updated');
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success','Product updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $product = Product::findOrFail($id);
+        if ($product->image && Storage::disk('public')->exists($product->image)) {
+            Storage::disk('public')->delete($product->image);
+        }
+
         $product->delete();
 
-        return response()->json([
-            'success' => true
-        ]);
+        return response()->json(['success' => true]);
+    }
+
+    /* =========================
+       FRONTEND METHODS
+    ==========================*/
+
+    public function show($id)
+    {
+        $product = Product::with('category')->findOrFail($id);
+        return view('products.show', compact('product'));
+    }
+
+    public function featured()
+    {
+        return Product::where('is_active',1)
+            ->where('is_featured',1)
+            ->latest()
+            ->get();
+    }
+
+    public function topSelling()
+    {
+        return Product::where('is_active',1)
+            ->where('is_top_selling',1)
+            ->latest()
+            ->get();
     }
 }

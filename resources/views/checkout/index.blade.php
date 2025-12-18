@@ -1,30 +1,44 @@
 @extends('template.template')
 
 @section('pagecontent')
-<h2>Checkout</h2>
-<form method="POST" action="{{ route('checkout.placeOrder') }}">
-    @csrf
-    <table class="table">
-        <thead>
-            <tr><th>Product</th><th>Price</th><th>Qty</th><th>Total</th></tr>
-        </thead>
-        <tbody>
-            @foreach($cart as $id=>$item)
-            <tr>
-                <td>{{ $item['name'] }}</td>
-                <td>${{ $item['price'] }}</td>
-                <td>{{ $item['qty'] }}</td>
-                <td>${{ $item['price'] * $item['qty'] }}</td>
-            </tr>
+<div class="container">
+    <h2>Checkout</h2>
+
+    <form action="{{ route('checkout.placeOrder') }}" method="POST">
+        @csrf
+
+        <h4>User Details</h4>
+        <div class="form-group">
+            <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+        </div>
+        <div class="form-group">
+            <input type="email" name="email" class="form-control" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
+        </div>
+        <div class="form-group">
+            <textarea name="address" class="form-control" placeholder="Address" required></textarea>
+        </div>
+
+        <h4>Order Summary</h4>
+        <ul>
+            @foreach($cart as $item)
+                <li>{{ $item['name'] }} x {{ $item['qty'] }} - Rs. {{ $item['price'] * $item['qty'] }}</li>
             @endforeach
-        </tbody>
-    </table>
-    <h4>Total: ${{ $total }}</h4>
-    <label>Payment Method:</label>
-    <select name="payment_method" required>
-        <option value="esewa">eSewa</option>
-        <option value="khalti">Khalti</option>
-    </select>
-    <button type="submit" class="btn btn-success">Place Order</button>
-</form>
+        </ul>
+        <h5>Total: Rs. {{ array_sum(array_map(fn($i) => $i['price'] * $i['qty'], $cart)) }}</h5>
+
+        <h4>Payment Method</h4>
+        <div class="form-group">
+            <select name="payment_method" class="form-control" required>
+                <option value="esewa">eSewa</option>
+                <option value="khalti">Khalti</option>
+                <option value="cod">Cash on Delivery</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+</div>
 @endsection

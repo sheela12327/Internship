@@ -32,10 +32,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index1'])->name('home');
 
+    // Product detail page
+    Route::get('/product/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
+
     Route::get('/cart', [CartController::class,'index'])->name('cart');
     Route::post('/cart/add', [CartController::class,'add'])->name('cart.add');
-    Route::post('/cart/update', [CartController::class,'updateQuantity'])->name('cart.update');
     Route::post('/cart/remove', [CartController::class,'remove'])->name('cart.remove');
+    Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])
+    ->name('cart.updateQuantity');
 
     Route::get('/checkout', [CheckoutController::class,'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class,'placeOrder'])->name('checkout.placeOrder');

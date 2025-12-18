@@ -55,7 +55,7 @@
 		</div>
 		<!-- /SECTION -->
 
-		<!-- SECTION -->
+		<!-- Featured Products Section -->
 		<div class="section">
 			<div class="container">
 				<div class="row">
@@ -67,7 +67,7 @@
 								<ul class="section-tab-nav tab-nav">
 									<!-- Static Products Tab -->
 									<li class="active">
-										<a data-toggle="tab" href="#static-products">All </a>
+										<a data-toggle="tab" href="#static-products">All</a>
 									</li>
 
 									<!-- Dynamic Category Tabs -->
@@ -85,100 +85,25 @@
 					<div class="col-md-12">
 						<div class="row">
 							<div class="products-tabs">
-								<!-- Static Products Tab Content -->
+								<!-- Static Products -->
 								<div id="static-products" class="tab-pane active">
-									<div class="products-slick" data-nav="#slick-nav-static">
-										<!-- Static Product 1 -->
-										<div class="product">
-											<div class="product-img">
-												<img src="{{asset('frontend/img/product02.png')}}" alt="">
-												<div class="product-label">
-													<span class="new">NEW</span>
-												</div>
-											</div>
-											<div class="product-body">
-												<p class="product-category">Accessories</p>
-												<h3 class="product-name"><a href="#">Hair Clips</a></h3>
-												<h4 class="product-price">Rs.250 <del class="product-old-price">Rs.300</del></h4>
-												<div class="product-rating">
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star-o"></i>
-												</div>
-												<div class="product-btns">
-													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i></button>
-													<button class="add-to-compare"><i class="fa fa-exchange"></i></button>
-													<button class="quick-view"><i class="fa fa-eye"></i></button>
-												</div>
-											</div>
-											<button class="add-to-cart-btn" >
-												<i class="fa fa-shopping-cart"></i> add to cart
-											</button>
-										</div>
+									<div class="products-slick" data-nav="#slick-nav-featured">
+										{{-- Static products first --}}
+										@foreach($staticFeatured as $product)
+											@include('partials.static-product-card', ['product' => $product])
+										@endforeach
 
-										<!-- Static Product 2 -->
-										<div class="product">
-											<div class="product-img">
-												<img src="{{asset('frontend/img/product04.png')}}" alt="">
-											</div>
-											<div class="product-body">
-												<p class="product-category">Summer Collection</p>
-												<h3 class="product-name"><a href="#">T-shirt</a></h3>
-												<h4 class="product-price">Rs.150 <del class="product-old-price">Rs.250</del></h4>
-												<div class="product-rating">
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-												</div>
-												<div class="product-btns">
-													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i></button>
-													<button class="add-to-compare"><i class="fa fa-exchange"></i></button>
-													<button class="quick-view"><i class="fa fa-eye"></i></button>
-												</div>
-											</div>
-											<button class="add-to-cart-btn" >
-												<i class="fa fa-shopping-cart"></i> add to cart
-											</button>
-										</div>
-
-										<!-- Static Product 3 -->
-										<div class="product">
-											<div class="product-img">
-												<img src="{{asset('frontend/img/product05.png')}}" alt="">
-											</div>
-											<div class="product-body">
-												<p class="product-category">Summer Collection</p>
-												<h3 class="product-name"><a href="#">Ladies T-shirt</a></h3>
-												<h4 class="product-price">Rs.200 <del class="product-old-price">Rs.300</del></h4>
-												<div class="product-rating">
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star-o"></i>
-												</div>
-												<div class="product-btns">
-													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i></button>
-													<button class="add-to-compare"><i class="fa fa-exchange"></i></button>
-													<button class="quick-view"><i class="fa fa-eye"></i></button>
-												</div>
-											</div>
-											<button class="add-to-cart-btn">
-												<i class="fa fa-shopping-cart"></i> add to cart
-											</button>
-										</div>
+										{{-- Dynamic products from admin --}}
+										@foreach($featuredProducts as $product)
+											@include('partials.product-card', ['product' => $product])
+										@endforeach
 									</div>
 									<div id="slick-nav-static" class="products-slick-nav"></div>
 								</div>
-								<!-- /Static Products Tab -->
 
-								<!-- Dynamic Category Tabs Content -->
+								<!-- Dynamic Category Products -->
 								@foreach($productsByCategory as $slug => $products)
-									<div id="{{ $slug }}" class="tab-pane fade">
+									<div id="{{ $slug }}" class="tab-pane {{ $loop->first ? '' : '' }}">
 										<div class="products-slick" data-nav="#slick-nav-{{ $slug }}">
 											@foreach($products as $product)
 												@include('partials.product-card', ['product' => $product])
@@ -187,7 +112,6 @@
 										<div id="slick-nav-{{ $slug }}" class="products-slick-nav"></div>
 									</div>
 								@endforeach
-								<!-- /Dynamic Category Tabs Content -->
 
 							</div>
 						</div>
@@ -195,7 +119,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- /Featured Products Section -->
+		<!-- /Featured Products Section -->	
 
 
 		<!-- TOP SELLING SECTION -->
@@ -213,12 +137,15 @@
 					<div class="col-md-12">
 						<div class="row">
 							<div class="products-slick" data-nav="#slick-nav-top-selling">
-								@forelse($topSelling as $product)
-									@include('partials.product-card', ['product' => $product])
-								@empty
-									<p>No top selling products yet.</p>
-								@endforelse
+								{{-- Static top selling --}}
+								@foreach($staticTopSelling as $product)
+									@include('partials.static-product-card', ['product' => $product])
+								@endforeach
 
+								{{-- Dynamic top selling --}}
+								@foreach($topSelling as $product)
+									@include('partials.product-card', ['product' => $product])
+								@endforeach
 							</div>
 							<div id="slick-nav-top-selling" class="products-slick-nav"></div>
 						</div>
