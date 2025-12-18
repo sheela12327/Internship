@@ -105,7 +105,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 Route::get('/contact_us', [ContactusController::class, 'contact'])
         ->name('contact');
 
-        Route::get('/aboutus', [AboutUsController::class, 'aboutus'])
+Route::get('/aboutus', [AboutUsController::class, 'aboutus'])
         ->name('aboutus');
 
 require __DIR__ . '/auth.php';
