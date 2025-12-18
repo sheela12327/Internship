@@ -23,45 +23,45 @@ class HomeController extends Controller
         }
 
         /* =========================
-           Categories (only those with products)
+           Fetch Categories
         ==========================*/
         $categories = Category::all();
 
         /* =========================
-           Dynamic Product Sections
+           Dynamic Products
         ==========================*/
-        $featuredProducts = Product::active()
-            ->featured()
+        $featuredProducts = Product::where('is_active', 1)
+            ->where('is_featured', 1)
             ->latest()
             ->take(6)
             ->get();
 
-        $hotDeals = Product::active()
+        $hotDeals = Product::where('is_active', 1)
             ->where('is_hot_deal', 1)
             ->latest()
             ->take(6)
             ->get();
 
-        $topSelling = Product::active()
-            ->topSelling()
+        $topSelling = Product::where('is_active', 1)
+            ->where('is_top_selling', 1)
             ->latest()
             ->take(6)
             ->get();
 
         /* =========================
-           Products Grouped by Category
+           Products grouped by category
         ==========================*/
         $productsByCategory = [];
         foreach ($categories as $category) {
             $productsByCategory[$category->slug] = $category->products()
-                ->active()
+                ->where('is_active', 1)
                 ->latest()
                 ->take(6)
                 ->get();
         }
 
         /* =========================
-           Static Featured Products
+           Static Products (optional)
         ==========================*/
         $staticFeatured = [
             [
@@ -90,9 +90,6 @@ class HomeController extends Controller
             ]
         ];
 
-        /* =========================
-           Static Top Selling Products
-        ==========================*/
         $staticTopSelling = [
             [
                 'name' => 'Product 6',
@@ -121,7 +118,7 @@ class HomeController extends Controller
         ];
 
         /* =========================
-           Pass everything to the view
+           Return view with all data
         ==========================*/
         return view('home', compact(
             'categories',
