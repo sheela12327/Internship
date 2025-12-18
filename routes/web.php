@@ -98,10 +98,59 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
 });
 
-Route::get('/contact_us', [ContactusController::class, 'contact'])
-        ->name('contact');
+// Route::get('/contact_us', [ContactusController::class, 'contact'])
+//         ->name('contact');
+
+// use App\Http\Controllers\ContactController;
+
+Route::get('/contact', [ContactusController::class, 'contact'])->name('contact');
+Route::post('/contact/send', [ContactusController::class, 'submitContactForm'])->name('contact.send');
+
+        
 
         Route::get('/aboutus', [AboutUsController::class, 'aboutus'])
         ->name('aboutus');
+
+
+        // use App\Http\Controllers\AboutController;
+
+// FRONTEND
+// Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+// ADMIN CRUD
+
+
+// use App\Http\Controllers\AboutUsController;
+
+Route::middleware(['auth','admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+    Route::get('/about', [AboutUsController::class, 'list'])->name('about.list');
+
+    Route::get('/about/create', [AboutUsController::class, 'create'])->name('about.create');
+    Route::post('/about/store', [AboutUsController::class, 'store'])->name('about.store');
+
+    Route::get('/about/edit/{id}', [AboutUsController::class, 'edit'])->name('about.edit');
+    Route::post('/about/update/{id}', [AboutUsController::class, 'update'])->name('about.update');
+
+    Route::get('/about/delete/{id}', [AboutUsController::class, 'destroy'])->name('about.delete');
+});
+
+
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/gmail-test', function () {
+    Mail::raw('Laravel Gmail SMTP test', function ($message) {
+        $message->to('sheelabhusal567@gmail.com')
+                ->subject('SMTP TEST');
+    });
+
+    return 'Mail sent';
+});
+
+
+
 
 require __DIR__ . '/auth.php';

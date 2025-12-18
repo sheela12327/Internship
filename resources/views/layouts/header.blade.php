@@ -4,7 +4,7 @@
 		<div class="container">
 			<ul class="header-links pull-left">
 				<li><a href="#"><i class="fa fa-phone"></i> +977 9847741752</a></li>
-				<li><a href="#"><i class="fa fa-envelope-o"></i> eshop@gmail.com</a></li>
+				<li><a href="#"><i class="fa fa-envelope-o"></i> myshop@gmail.com</a></li>
 				<li><a href="#"><i class="fa fa-map-marker"></i> Ratnachowk, Pokhara</a></li>
 			</ul>
 			<ul class="header-links pull-right">
