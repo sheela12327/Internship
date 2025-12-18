@@ -82,9 +82,9 @@
     <div class="email">✉ myshop@gmail.com</div>
 
     <div class="social-icons">
-      <span>👍</span>
-      <span>📷</span>
-      <span>📘</span>
+      <span>ⓕ</span>
+      <span>🅾</span>
+      <span>🌐</span>
       <span>🐦</span>
       <span>💼</span>
     </div>

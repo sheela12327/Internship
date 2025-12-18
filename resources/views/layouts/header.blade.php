@@ -72,8 +72,16 @@
 						<a href="{{ route('contact') }}">Contact Us</a>
 					</li>
 
-					<li class="{{ request()->routeIs('shop') ? 'active' : '' }}">
-						<a href="#">Shop</a>
+					<li class="dropdown category-dropdown {{ request()->routeIs('pages.*') ? 'active' : '' }}">
+						<a href="#" class="dropdown-toggle">
+							Pages <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Orders</a></li>
+							<li><a href="#">Chats</a></li>
+							<li><a href="#">Shop</a></li>
+							
+						</ul>
 					</li>
 				</ul>
 
