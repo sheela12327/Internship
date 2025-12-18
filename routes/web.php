@@ -112,7 +112,7 @@ Route::post('/contact/send', [ContactusController::class, 'submitContactForm'])-
 
         
 
-        Route::get('/aboutus', [AboutUsController::class, 'aboutus'])
+Route::get('/aboutus', [AboutUsController::class, 'aboutus'])
         ->name('aboutus');
 
 
