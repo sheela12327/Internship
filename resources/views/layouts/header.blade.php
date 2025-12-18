@@ -195,11 +195,15 @@
 <!-- /HEADER -->
 
 <script>
-// Load cart and wishlist from localStorage
+// ---------------------------
+// Initialize cart & wishlist
+// ---------------------------
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
-// Update cart & wishlist counts in header
+// ---------------------------
+// Update header counts & subtotal
+// ---------------------------
 function updateHeaderCounts() {
     // Cart count
     const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
@@ -208,31 +212,65 @@ function updateHeaderCounts() {
 
     // Cart subtotal
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-    document.getElementById('cart-subtotal').textContent = `SUBTOTAL: $${subtotal.toFixed(2)}`;
+    document.getElementById('cart-subtotal').textContent = `SUBTOTAL: ₹${subtotal.toFixed(2)}`;
 
     // Wishlist count
     document.getElementById('wishlist-count').textContent = wishlist.length;
 }
 
-// Render cart dropdown items
+// ---------------------------
+// Render cart dropdown
+// ---------------------------
 function renderCartDropdown() {
-    const cartContainer = document.getElementById('cart-items');
-    cartContainer.innerHTML = '';
+	const cartContainer = document.getElementById('cart-items');
+	cartContainer.innerHTML = '';
+	
+	cart.forEach(item => {
+		cartContainer.innerHTML += `
+		<div class="product-widget">
+			<div class="product-img">
+				<img src="${item.image}" alt="${item.name}">
+			</div>
 
-    cart.forEach(item => {
-        cartContainer.innerHTML += `
-            <div class="product-widget">
-                <div class="product-img">
-                    <img src="${item.image}" alt="${item.name}">
-                </div>
-                <div class="product-body">
-                    <h3 class="product-name"><a href="#">${item.name}</a></h3>
-                    <h4 class="product-price"><span class="qty">${item.qty}x</span>$${item.price}</h4>
-                </div>
-                <button class="delete" data-id="${item.id}"><i class="fa fa-close"></i></button>
-            </div>
-        `;
-    });
+			<div class="product-body">
+				<h3 class="product-name">
+					<a href="/product/${item.id}">${item.name}</a>
+				</h3>
+
+				<h4 class="product-price">
+					₹${item.price.toFixed(2)}
+				</h4>
+
+				<div class="qty-controls">
+					<button class="qty-minus" data-id="${item.id}">−</button>
+					<span>${item.qty}</span>
+					<button class="qty-plus" data-id="${item.id}">+</button>
+				</div>
+			</div>
+
+			<button class="delete" data-id="${item.id}">
+				<i class="fa fa-close"></i>
+			</button>
+		</div>
+`;
+	});
+	
+	document.querySelectorAll('.qty-plus').forEach(btn => {
+		btn.onclick = () => {
+			const item = cart.find(i => i.id == btn.dataset.id);
+			item.qty++;
+			saveAndRefresh();
+		};
+	});
+
+	document.querySelectorAll('.qty-minus').forEach(btn => {
+		btn.onclick = () => {
+			const item = cart.find(i => i.id == btn.dataset.id);
+			if(item.qty > 1) item.qty--;
+			saveAndRefresh();
+		};
+	});
+
 
     // Delete item from cart
     document.querySelectorAll('#cart-items .delete').forEach(btn => {
@@ -246,7 +284,16 @@ function renderCartDropdown() {
     });
 }
 
+function saveAndRefresh(){
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartHeader();
+    renderCartDropdown();
+}
+
+
+// ---------------------------
 // Add to cart button logic
+// ---------------------------
 document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const id = btn.dataset.id;
@@ -254,6 +301,7 @@ document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
         const price = parseFloat(btn.dataset.price);
         const image = btn.dataset.image;
 
+        // Check if item exists in cart
         const existing = cart.find(item => item.id == id);
         if(existing){
             existing.qty += 1;
@@ -261,6 +309,7 @@ document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
             cart.push({id, name, price, image, qty: 1});
         }
 
+        // Save to localStorage
         localStorage.setItem('cart', JSON.stringify(cart));
         updateHeaderCounts();
         renderCartDropdown();
@@ -268,26 +317,53 @@ document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
     });
 });
 
-// Wishlist logic (optional, if you have wishlist buttons)
+// ---------------------------
+// Wishlist logic (AJAX + Laravel)
+// ---------------------------
 document.querySelectorAll('.add-to-wishlist').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault(); // prevent default behavior if button is a link
+
         const id = btn.dataset.id;
         const name = btn.dataset.name;
-        const image = btn.dataset.image;
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        if(!wishlist.find(item => item.id == id)){
-            wishlist.push({id, name, image});
-        }
+        fetch("{{ route('wishlist.add') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ product_id: id })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success){
+                // Update wishlist count in header
+                const countElem = document.getElementById('wishlist-count');
+                if(countElem) countElem.textContent = data.wishlist_count;
 
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
-        updateHeaderCounts();
-        alert(`${name} added to wishlist`);
+                alert(`${name} added to wishlist`);
+            } else {
+                alert('Something went wrong. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding to wishlist:', error);
+            alert('Something went wrong. Please try again.');
+        });
     });
 });
 
-// Initialize
+
+
+// ---------------------------
+// Initialize on page load
+// ---------------------------
 updateHeaderCounts();
 renderCartDropdown();
 </script>
+
 
 	

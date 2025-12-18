@@ -17,15 +17,15 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 // Public Routes
 Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/shop', [ShopController::class,'index'])->name('shop');
 Route::get('/product/{slug}', [ShopController::class,'show'])->name('product.detail');  
+Route::get('/contact_us', [ContactusController::class, 'contact'])
+        ->name('contact');
+
+Route::get('/aboutus', [AboutUsController::class, 'aboutus'])
+        ->name('aboutus');
 
 // Authenticated (customer)
 Route::middleware(['auth'])->group(function () {
@@ -35,21 +35,28 @@ Route::middleware(['auth'])->group(function () {
     // Product detail page
     Route::get('/product/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
 
+    //Cart Routes
     Route::get('/cart', [CartController::class,'index'])->name('cart');
     Route::post('/cart/add', [CartController::class,'add'])->name('cart.add');
     Route::post('/cart/remove', [CartController::class,'remove'])->name('cart.remove');
     Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])
     ->name('cart.updateQuantity');
 
+    // Checkout Routes
     Route::get('/checkout', [CheckoutController::class,'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class,'placeOrder'])->name('checkout.placeOrder');
 
-    Route::post('/payment/esewa', [PaymentController::class,'esewaPayment'])->name('payment.esewa');
-    Route::post('/payment/khalti', [PaymentController::class,'khaltiPayment'])->name('payment.khalti');
+    // Payment Routes
+    Route::get('payment/esewa/success/{order}', [PaymentController::class, 'esewaSuccess'])->name('payment.esewa.success');
+    Route::get('payment/esewa/cancel/{order}', [PaymentController::class, 'esewaCancel'])->name('payment.esewa.cancel');
 
+    Route::get('payment/khalti/success/{order}', [PaymentController::class, 'khaltiSuccess'])->name('payment.khalti.success');
+
+    // Order Confirmation
     Route::get('/order/confirmation/{id}', [OrderController::class,'confirmation'])->name('order.confirmation');
 
-   Route::get('/shop', [ShopController::class,'index'])->name('shop');
+    // Shop Routes
+    Route::get('/shop', [ShopController::class,'index'])->name('shop');
 
     // Wishlist Routes
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
@@ -102,10 +109,6 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
 });
 
-Route::get('/contact_us', [ContactusController::class, 'contact'])
-        ->name('contact');
 
-Route::get('/aboutus', [AboutUsController::class, 'aboutus'])
-        ->name('aboutus');
 
 require __DIR__ . '/auth.php';
