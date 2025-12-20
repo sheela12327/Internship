@@ -59,14 +59,16 @@
 						<a href="#" class="dropdown-toggle">
 							Categories <i class="fa fa-caret-down"></i>
 						</a>
-						<ul class="dropdown-menu">
-							<li><a href="#">Summer Collections</a></li>
-							<li><a href="#">Winter Collections</a></li>
-							<li><a href="#">Footwear</a></li>
-							<li><a href="#">Bags</a></li>
-							<li><a href="#">Accessories</a></li>
-						</ul>
+					<ul class="dropdown-menu">
+						<li><a href="#">Summer Collections</a></li>
+						<li><a href="#">Winter Collections</a></li>
+						<li><a href="#">Footwear</a></li>
+						<li><a href="#">Bags</a></li>
+						<li><a href="#">Accessories</a></li>
+					</ul>
+
 					</li>
+
 
 					<li class="{{ request()->routeIs('contact') ? 'active' : '' }}">
 						<a href="{{ route('contact') }}">Contact Us</a>
@@ -77,7 +79,7 @@
 							Pages <i class="fa fa-caret-down"></i>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Orders</a></li>
+							<li><a href="{{route('orderinfo')}}" style="">Orders</a></li>
 							<li><a href="#">Chats</a></li>
 							<li><a href="#">Shop</a></li>
 							

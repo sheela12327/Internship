@@ -9,6 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderInfoController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -153,6 +154,12 @@ Route::get('/gmail-test', function () {
 
     return 'Mail sent';
 });
+
+
+ Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
+
+
+
 
 
 
