@@ -1,44 +1,91 @@
 @extends('template.template')
 
 @section('pagecontent')
-<div class="container">
-    <h2>Checkout</h2>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
 
-    <form action="{{ route('checkout.placeOrder') }}" method="POST">
-        @csrf
+            <h2 class="mb-4 text-center fw-bold">Order Confirmation</h2>
 
-        <h4>User Details</h4>
-        <div class="form-group">
-            <input type="text" name="name" class="form-control" placeholder="Full Name" required>
-        </div>
-        <div class="form-group">
-            <input type="email" name="email" class="form-control" placeholder="Email" required>
-        </div>
-        <div class="form-group">
-            <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
-        </div>
-        <div class="form-group">
-            <textarea name="address" class="form-control" placeholder="Address" required></textarea>
-        </div>
+            @if(session('success'))
+                <div class="alert alert-success text-center">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-        <h4>Order Summary</h4>
-        <ul>
-            @foreach($cart as $item)
-                <li>{{ $item['name'] }} x {{ $item['qty'] }} - Rs. {{ $item['price'] * $item['qty'] }}</li>
-            @endforeach
-        </ul>
-        <h5>Total: Rs. {{ array_sum(array_map(fn($i) => $i['price'] * $i['qty'], $cart)) }}</h5>
+            <!-- Order Info -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <strong>Order #{{ $order->id }}</strong>
+                </div>
+                <div class="card-body row">
+                    <div class="col-md-6">
+                        <p><strong>Name:</strong> {{ $order->name }}</p>
+                        <p><strong>Email:</strong> {{ $order->email }}</p>
+                        <p><strong>Phone:</strong> {{ $order->phone }}</p>
+                        <p><strong>Address:</strong> {{ $order->address }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Payment Method:</strong> {{ strtoupper($order->payment_method) }}</p>
+                        <p>
+                            <strong>Status:</strong>
+                            <span class="badge 
+                                {{ $order->status == 'completed' ? 'bg-success' : 'bg-warning text-dark' }}">
+                                {{ ucfirst($order->status) }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-        <h4>Payment Method</h4>
-        <div class="form-group">
-            <select name="payment_method" class="form-control" required>
-                <option value="esewa">eSewa</option>
-                <option value="khalti">Khalti</option>
-                <option value="cod">Cash on Delivery</option>
-            </select>
+            <!-- Order Items -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="mb-3 fw-semibold">Order Items</h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price (Rs.)</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal (Rs.)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $total = 0; @endphp
+
+                                @foreach($order->items as $item)
+                                    @php
+                                        $subtotal = $item->price * $item->quantity;
+                                        $total += $subtotal;
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $item->product->name }}</td>
+                                        <td>{{ number_format($item->price, 2) }}</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>{{ number_format($subtotal, 2) }}</td>
+                                    </tr>
+                                @endforeach
+
+                                <tr class="fw-bold">
+                                    <td colspan="3" class="text-end">Total</td>
+                                    <td>Rs. {{ number_format($total, 2) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="text-end">
+                        <a href="{{ route('home') }}" class="btn btn-primary">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
-
-        <button type="submit" class="btn btn-primary">Place Order</button>
-    </form>
+    </div>
 </div>
 @endsection
