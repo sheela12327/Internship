@@ -12,7 +12,7 @@
 								<ul class="footer-links">
 									<li><a href="#"><i class="fa fa-map-marker"></i>Ratnachowk, Pokhara</a></li>
 									<li><a href="#"><i class="fa fa-phone"></i>+977 9847741752</a></li>
-									<li><a href="#"><i class="fa fa-envelope-o"></i>eshop@mail.com</a></li>
+									<li><a href="#"><i class="fa fa-envelope-o"></i>myshop@mail.com</a></li>
 								</ul>
 							</div>
 						</div>
@@ -80,7 +80,7 @@
 							</ul> -->
 							<span class="copyright">
 								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved 
+								MyShop &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved 
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 							</span>
 						</div>

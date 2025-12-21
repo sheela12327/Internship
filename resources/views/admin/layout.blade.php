@@ -82,6 +82,12 @@
             📦 Orders
         </a>
 
+          <a href="{{ route('admin.about.list') }}" class="{{ request()->routeIs('admin.about.*') ? 'active' : '' }}">
+            📦 About Us
+        </a>
+
+
+
         <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
             👤 Users
         </a>

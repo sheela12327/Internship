@@ -82,31 +82,76 @@
     <div class="email">✉ myshop@gmail.com</div>
 
     <div class="social-icons">
-      <span>👍</span>
-      <span>📷</span>
-      <span>📘</span>
+      <span>ⓕ</span>
+      <span>🅾</span>
+      <span>🌐</span>
       <span>🐦</span>
       <span>💼</span>
     </div>
   </div>
 
   <div class="contact-form">
-    <form method="POST" action="#">
-      @csrf
+   <form id="contactForm">
+  @csrf
 
-      <div class="row">
-        <input  class="inp" type="text" name="first_name" placeholder="First Name">
-        <input class="inp" type="text" name="last_name" placeholder="Last Name">
-      </div>
+  <div class="row">
+    <input class="inp" type="text" name="first_name" placeholder="First Name" required>
+    <input class="inp" type="text" name="last_name" placeholder="Last Name" required>
+  </div>
 
-      <input class="inp" type="email" name="email" placeholder="Email *" required>
+  <input class="inp" type="email" name="email" placeholder="Email *" required>
 
-      <textarea class="inp" name="message" placeholder="Message"></textarea>
+  <textarea class="inp" name="message" placeholder="Message" required></textarea>
 
-      <button class="btn" type="submit">Send</button>
-    </form>
+  <button class="btn" type="submit">Send</button>
+</form>
+
+<p id="statusMsg" style="margin-top:10px;"></p>
+
   </div>
 
 </div>
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    let form = this;
+    let status = document.getElementById('statusMsg');
+    let button = form.querySelector('button');
+
+    status.innerHTML = '📨 Sending email...';
+    button.disabled = true;
+
+    fetch("{{ route('contact.send') }}", {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "Accept": "application/json"
+        },
+        body: new FormData(form)
+    })
+    .then(async res => {
+        const data = await res.json();
+        if (!res.ok) throw data;
+        return data;
+    })
+    .then(data => {
+        status.innerHTML = '✅ Email sent successfully!';
+        form.reset();
+    })
+    .catch(err => {
+        if (err.errors) {
+            // Laravel validation error
+            let messages = Object.values(err.errors).flat().join('<br>');
+            status.innerHTML = '❌ ' + messages;
+        } else {
+            status.innerHTML = '❌ Failed to send email';
+        }
+    })
+    .finally(() => {
+        button.disabled = false;
+    });
+});
+</script>
 
 @endsection
