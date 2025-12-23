@@ -128,7 +128,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])
         ->name('admin.users.delete');
 
-});
+// });
 
 // Route::get('/contact_us', [ContactusController::class, 'contact'])
 //         ->name('contact');
