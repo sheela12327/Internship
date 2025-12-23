@@ -95,9 +95,6 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-<<<<<<< HEAD
-Route::middleware(['auth', 'admin'])
-=======
     // Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
@@ -156,7 +153,6 @@ Route::post('/contact/send', [ContactusController::class, 'submitContactForm'])-
 // use App\Http\Controllers\AboutUsController;
 
 Route::middleware(['auth','admin'])
->>>>>>> origin/main
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
@@ -208,8 +204,6 @@ Route::get('/gmail-test', function () {
     return 'Mail sent';
 });
 
-<<<<<<< HEAD
-=======
 
  Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
 
@@ -221,5 +215,4 @@ Route::get('/gmail-test', function () {
 
 
 
->>>>>>> origin/main
 require __DIR__ . '/auth.php';
