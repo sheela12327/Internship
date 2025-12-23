@@ -55,90 +55,90 @@
 		</div>
 		<!-- /SECTION -->
 
-<!-- SECTION -->
-<div class="section">
-    <div class="container">
-        <div class="row">
+		<!-- SECTION -->
+		<div class="section">
+			<div class="container">
+				<div class="row">
 
-            <!-- Section Title -->
-            <div class="col-md-12">
-                <div class="section-title">
-                    <h3 class="title">Featured Products</h3>
-                    <div class="section-nav">
-                        <ul class="section-tab-nav tab-nav">
-                            @foreach($categories as $key => $category)
-                                <li class="{{ $key == 0 ? 'active' : '' }}">
-                                    <a data-toggle="tab" href="#tab{{$category->id}}">{{ $category->name }}</a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- /Section Title -->
+					<!-- Section Title -->
+					<div class="col-md-12">
+						<div class="section-title">
+							<h3 class="title">Featured Products</h3>
+							<div class="section-nav">
+								<ul class="section-tab-nav tab-nav">
+									@foreach($categories as $key => $category)
+										<li class="{{ $key == 0 ? 'active' : '' }}">
+											<a data-toggle="tab" href="#tab{{$category->id}}">{{ $category->name }}</a>
+										</li>
+									@endforeach
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Section Title -->
 
-            <!-- Products Tab & Slick -->
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="products-tabs">
-                        @foreach($categories as $key => $category)
-                        <div id="tab{{$category->id}}" class="tab-pane {{ $key == 0 ? 'active' : '' }}">
-                            <div class="products-slick" data-nav="#slick-nav-{{$category->id}}">
+					<!-- Products Tab & Slick -->
+					<div class="col-md-12">
+						<div class="row">
+							<div class="products-tabs">
+								@foreach($categories as $key => $category)
+								<div id="tab{{$category->id}}" class="tab-pane {{ $key == 0 ? 'active' : '' }}">
+									<div class="products-slick" data-nav="#slick-nav-{{$category->id}}">
 
-                                @forelse($category->products as $product)
-                                <!-- product -->
-                                <div class="product">
-                                    <div class="product-img">
-                                        <img src="{{ $product->image ? asset('storage/'.$product->image) : asset('frontend/img/default.png') }}" alt="{{ $product->name }}">
-                                        @if($product->is_new ?? false)
-                                        <div class="product-label">
-                                            <span class="new">NEW</span>
-                                        </div>
-                                        @endif
-                                    </div>
-                                    <div class="product-body">
-                                        <p class="product-category">{{ $category->name }}</p>
-                                        <h3 class="product-name">
-                                            <a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a>
-                                        </h3>
-                                        <h4 class="product-price">Rs.{{ $product->price }}
-                                            @if($product->old_price)
-                                                <del class="product-old-price">Rs.{{ $product->old_price }}</del>
-                                            @endif
-                                        </h4>
-                                        <div class="product-rating">
-                                            @for($i=0; $i<5; $i++)
-                                                <i class="fa fa-star{{ $i < $product->rating ? '' : '-o' }}"></i>
-                                            @endfor
-                                        </div>
-                                        <div class="product-btns">
-                                            <button class="add-to-wishlist"><i class="fa fa-heart-o"></i></button>
-                                            <button class="add-to-compare"><i class="fa fa-exchange"></i></button>
-                                            <button class="quick-view"><i class="fa fa-eye"></i></button>
-                                        </div>
-                                    </div>
-                                    <button class="add-to-cart-btn">
-                                        <i class="fa fa-shopping-cart"></i> add to cart
-                                    </button>
-                                </div>
-                                <!-- /product -->
-                                @empty
-                                    <p>No products in this category.</p>
-                                @endforelse
+										@forelse($category->products as $product)
+										<!-- product -->
+										<div class="product">
+											<div class="product-img">
+												<img src="{{ $product->image ? asset('storage/'.$product->image) : asset('frontend/img/default.png') }}" alt="{{ $product->name }}">
+												@if($product->is_new ?? false)
+												<div class="product-label">
+													<span class="new">NEW</span>
+												</div>
+												@endif
+											</div>
+											<div class="product-body">
+												<p class="product-category">{{ $category->name }}</p>
+												<h3 class="product-name">
+													<a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a>
+												</h3>
+												<h4 class="product-price">Rs.{{ $product->price }}
+													@if($product->old_price)
+														<del class="product-old-price">Rs.{{ $product->old_price }}</del>
+													@endif
+												</h4>
+												<div class="product-rating">
+													@for($i=0; $i<5; $i++)
+														<i class="fa fa-star{{ $i < $product->rating ? '' : '-o' }}"></i>
+													@endfor
+												</div>
+												<div class="product-btns">
+													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i></button>
+													<button class="add-to-compare"><i class="fa fa-exchange"></i></button>
+													<button class="quick-view"><i class="fa fa-eye"></i></button>
+												</div>
+											</div>
+											<button class="add-to-cart-btn">
+												<i class="fa fa-shopping-cart"></i> add to cart
+											</button>
+										</div>
+										<!-- /product -->
+										@empty
+											<p>No products in this category.</p>
+										@endforelse
 
-                            </div>
-                            <div id="slick-nav-{{$category->id}}" class="products-slick-nav"></div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-            <!-- /Products Tab & Slick -->
+									</div>
+									<div id="slick-nav-{{$category->id}}" class="products-slick-nav"></div>
+								</div>
+								@endforeach
+							</div>
+						</div>
+					</div>
+					<!-- /Products Tab & Slick -->
 
-        </div>
-    </div>
-</div>
-<!-- /SECTION -->
+				</div>
+			</div>
+		</div>
+		<!-- /SECTION -->
 
 
 

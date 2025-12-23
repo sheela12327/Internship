@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
@@ -13,94 +14,74 @@ class CheckoutController extends Controller
     // Show checkout page
     public function index()
     {
-        $cart = session()->get('cart', []);
-        return view('checkout.index', compact('cart'));
+        $cartItems = CartItem::with('product')
+            ->whereHas('cart', fn($q) => $q->where('user_id', Auth::id()))
+            ->get();
+
+        return view('frontend.order.index', compact('cartItems'));
     }
 
     // Place the order
     public function placeOrder(Request $request)
     {
-       $cart = session()->get('cart');
-
-        if (!$cart || count($cart) == 0) {
-            return back()->with('error', 'Your cart is empty');
-        }
-
-        $order = Order::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'payment_method' => $request->payment_method,
-            'status' => 'pending'
-        ]);
-
-        foreach ($cart as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item['product_id'], // VERY IMPORTANT
-                'price' => $item['price'],
-                'qty' => $item['qty'],
-            ]);
-        }
-
-        session()->forget('cart');
-
-        return redirect()->route('order.confirmation', $order->id)
-            ->with('success', 'Order placed successfully.');
-
-        // Validate user input
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
             'address' => 'required|string|max:500',
-            'payment_method' => 'required|string|in:esewa,khalti,cod', // cod = cash on delivery
+            'payment_method' => 'required|string|in:cash,esewa,khalti',
         ]);
 
-        // Calculate total amount
-        $totalAmount = array_sum(array_map(fn($item) => $item['price'] * $item['qty'], $cart));
+        $cartItems = CartItem::with('product')
+            ->whereHas('cart', fn($q) => $q->where('user_id', Auth::id()))
+            ->get();
 
-        // Create order
+        if ($cartItems->isEmpty()) {
+            return back()->with('error', 'Your cart is empty.');
+        }
+
+        $totalAmount = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+
         $order = Order::create([
-            'user_id' => Auth::id() ?? null,
+            'user_id' => Auth::id(),
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'total_amount' => $totalAmount,  // <--- must match DB column
+            'total_amount' => $totalAmount,
             'status' => 'pending',
             'payment_method' => $request->payment_method,
         ]);
 
-        // Create order items and update stock
-        foreach ($cart as $productId => $item) {
+        foreach ($cartItems as $item) {
             OrderItem::create([
                 'order_id' => $order->id,
-                'product_id' => $productId,
-                'quantity' => $item['qty'],
-                'price' => $item['price'],
+                'product_id' => $item->product->id,
+                'price' => $item->product->price,
+                'qty' => $item->quantity,
             ]);
 
-            $product = Product::find($productId);
-            if ($product) {
-                $product->stock -= $item['qty'];
-                $product->save();
-            }
+            $item->product->decrement('stock', $item->quantity);
         }
 
-        // Clear cart
-        session()->forget('cart');
+        CartItem::whereIn('id', $cartItems->pluck('id'))->delete();
 
-        // Redirect to payment page or order confirmation
+        // Redirect based on payment method
         switch ($request->payment_method) {
             case 'esewa':
                 return view('payment.esewa', compact('order'));
             case 'khalti':
                 return view('payment.khalti', compact('order'));
-            default: // cod or other
+            default:
                 return redirect()->route('order.confirmation', $order->id)
-                                ->with('success', 'Order placed successfully.');
+                    ->with('success', 'Order placed successfully.');
         }
+    }
+
+    // Order confirmation page
+    public function confirmation(Order $order)
+    {
+        $order->load('items.product');
+        return view('frontend.order.index', compact('order'));
     }
 }

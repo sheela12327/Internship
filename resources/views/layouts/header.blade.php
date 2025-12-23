@@ -59,15 +59,20 @@
 						<a href="#" class="dropdown-toggle">
 							Categories <i class="fa fa-caret-down"></i>
 						</a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Summer Collections</a></li>
-						<li><a href="#">Winter Collections</a></li>
-						<li><a href="#">Footwear</a></li>
-						<li><a href="#">Bags</a></li>
-						<li><a href="#">Accessories</a></li>
-					</ul>
 
+						<ul class="dropdown-menu">
+							@forelse($headerCategories as $category)
+								<li>
+									<a href="{{ route('category.products', $category->slug) }}">
+										{{ $category->name }}
+									</a>
+								</li>
+							@empty
+								<li><a href="#">No Categories</a></li>
+							@endforelse
+						</ul>
 					</li>
+
 
 
 					<li class="{{ request()->routeIs('contact') ? 'active' : '' }}">
@@ -365,8 +370,6 @@ document.querySelectorAll('.add-to-wishlist').forEach(btn => {
         });
     });
 });
-
-
 
 // ---------------------------
 // Initialize on page load

@@ -24,6 +24,8 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/product/{slug}', [ShopController::class, 'show'])->name('product.detail');
+Route::get('/category/{slug}', [ProductController::class, 'categoryProducts'])
+    ->name('category.products');
 
 Route::get('/aboutus', [AboutUsController::class, 'aboutus'])->name('aboutus');
 
@@ -55,8 +57,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Checkout
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-    Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])
-        ->name('checkout.placeOrder');
+    Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+    Route::get('/order/confirmation/{order}', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
 
     // Payments
     Route::get('/payment/esewa/success/{order}', [PaymentController::class, 'esewaSuccess'])

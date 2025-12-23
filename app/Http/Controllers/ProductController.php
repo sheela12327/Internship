@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+
+    public function categoryProducts($slug)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+
+        $products = Product::where('category_id', $category->id)->get();
+
+        return view('category.products', compact('category', 'products'));
+    }
+
     /* =========================
        ADMIN METHODS
     ==========================*/
