@@ -233,69 +233,63 @@ $('#addProductModal form').submit(function(e){
         contentType: false,
         processData: false,
         success: function(response){
-            // Close modal
-            $('#addProductModal').modal('hide');
-            $('#addProductModal form')[0].reset();
 
-            // Prepare new table row
-            let lastIndex = $('table tbody tr').length + 1;
-            let newRow = `
-            <tr>
-                <td>${lastIndex}</td>
-                <td>${response.name}</td>
-                <td>${response.category_name}</td>
-                <td>${response.price}</td>
-                <td>${response.stock}</td>
+    let p = response.product;
 
-                <td>${response.is_featured ? '✅' : '❌'}</td>
-                <td>${response.is_hot_deal ? '🔥' : '❌'}</td>
-                <td>${response.is_top_selling ? '⭐' : '❌'}</td>
+    $('#addProductModal').modal('hide');
+    $('#addProductModal form')[0].reset();
 
-                <td>
-                    <button class="btn btn-sm btn-warning editProductBtn"
-                        data-id="${response.id}"
-                        data-name="${response.name}"
-                        data-description="${response.description}"
-                        data-price="${response.price}"
-                        data-stock="${response.stock}"
-                        data-category="${response.category_id}"
-                        data-featured="${response.is_featured}"
-                        data-hot="${response.is_hot_deal}"
-                        data-top="${response.is_top_selling}"
-                        data-image="${response.image}">
-                        Edit
-                    </button>
+    let lastIndex = $('table tbody tr').length + 1;
 
-                    <form action="/admin/products/${response.id}" method="POST" class="d-inline">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="_method" value="DELETE">
+    let newRow = `
+    <tr>
+        <td>${lastIndex}</td>
+        <td>${p.name}</td>
+        <td>${p.category.name}</td>
+        <td>${p.price}</td>
+        <td>${p.stock}</td>
 
-                        <button type="submit" class="btn btn-sm btn-danger"
-                            onclick="return confirm('Delete this product?')">
-                            Delete
-                        </button>
-                    </form>
+        <td>${p.is_featured ? '✅' : '❌'}</td>
+        <td>${p.is_hot_deal ? '🔥' : '❌'}</td>
+        <td>${p.is_top_selling ? '⭐' : '❌'}</td>
 
-                </td>
+        <td>
+            <button class="btn btn-sm btn-warning editProductBtn"
+                data-id="${p.id}"
+                data-name="${p.name}"
+                data-description="${p.description ?? ''}"
+                data-price="${p.price}"
+                data-stock="${p.stock}"
+                data-category="${p.category_id}"
+                data-featured="${p.is_featured}"
+                data-hot="${p.is_hot_deal}"
+                data-top="${p.is_top_selling}"
+                data-image="${p.image}">
+                Edit
+            </button>
 
-                <td>
-                    ${response.image 
-                        ? `<img src="/storage/${response.image}" width="60">` 
-                        : '<span class="text-muted">No Image</span>'}
-                </td>
-            </tr>
-            `;
+            <button class="btn btn-sm btn-danger deleteProductBtn"
+                data-id="${p.id}">
+                Delete
+            </button>
+        </td>
 
+        <td>
+            ${p.image 
+                ? `<img src="/storage/${p.image}" width="60">`
+                : '<span class="text-muted">No Image</span>'}
+        </td>
+    </tr>
+    `;
 
-            $('table tbody').append(newRow);
+    $('table tbody').append(newRow);
+    bindEditButtons();
+},
+       error: function(xhr){
+    console.log(xhr.responseText);
+    alert(xhr.responseJSON?.message || 'Error occurred');
+}
 
-            // Optional: rebind edit button click
-            bindEditButtons();
-        },
-        error: function(err){
-            alert('Something went wrong!');
-            console.log(err);
-        }
     });
 });
 

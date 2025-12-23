@@ -81,7 +81,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="{{route('orderinfo')}}" style="">Orders</a></li>
 							<li><a href="#">Chats</a></li>
-							<li><a href="#">Shop</a></li>
+							<li><a href="{{route('shopnow')}}">Shop</a></li>
 							
 						</ul>
 					</li>

@@ -14,6 +14,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ShopNewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
@@ -164,6 +165,8 @@ Route::get('/gmail-test', function () {
  Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
 
 
+
+ Route::get('/shopnow', [ShopNewController::class, 'index'])->name('shopnow');
 
 
 
