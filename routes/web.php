@@ -17,64 +17,81 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShopNewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('/', [IndexController::class, 'index'])->name('index');
-Route::get('/shop', [ShopController::class,'index'])->name('shop');
-Route::get('/product/{slug}', [ShopController::class,'show'])->name('product.detail');  
-Route::get('/contact_us', [ContactusController::class, 'contact'])
-        ->name('contact');
 
-Route::get('/aboutus', [AboutUsController::class, 'aboutus'])
-        ->name('aboutus');
+Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+Route::get('/product/{slug}', [ShopController::class, 'show'])->name('product.detail');
 
-// Authenticated (customer)
+Route::get('/aboutus', [AboutUsController::class, 'aboutus'])->name('aboutus');
+
+Route::get('/contact', [ContactusController::class, 'contact'])->name('contact');
+Route::post('/contact/send', [ContactusController::class, 'submitContactForm'])
+    ->name('contact.send');
+
+
+/*
+|--------------------------------------------------------------------------
+| AUTHENTICATED USER (CUSTOMER) ROUTES
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index1'])->name('home');
 
-    // Product detail page
-    Route::get('/product/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
+    // Product
+    Route::get('/product/view/{id}', [ProductController::class, 'show'])
+        ->name('product.show');
 
-    //Cart Routes
-    Route::get('/cart', [CartController::class,'index'])->name('cart');
-    Route::post('/cart/add', [CartController::class,'add'])->name('cart.add');
-    Route::post('/cart/remove', [CartController::class,'remove'])->name('cart.remove');
+    // Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])
-    ->name('cart.updateQuantity');
+        ->name('cart.updateQuantity');
 
-    // Checkout Routes
-    Route::get('/checkout', [CheckoutController::class,'index'])->name('checkout');
-    Route::post('/checkout', [CheckoutController::class,'placeOrder'])->name('checkout.placeOrder');
+    // Checkout
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])
+        ->name('checkout.placeOrder');
 
-    // Payment Routes
-    Route::get('payment/esewa/success/{order}', [PaymentController::class, 'esewaSuccess'])->name('payment.esewa.success');
-    Route::get('payment/esewa/cancel/{order}', [PaymentController::class, 'esewaCancel'])->name('payment.esewa.cancel');
+    // Payments
+    Route::get('/payment/esewa/success/{order}', [PaymentController::class, 'esewaSuccess'])
+        ->name('payment.esewa.success');
+    Route::get('/payment/esewa/cancel/{order}', [PaymentController::class, 'esewaCancel'])
+        ->name('payment.esewa.cancel');
 
-    Route::get('payment/khalti/success/{order}', [PaymentController::class, 'khaltiSuccess'])->name('payment.khalti.success');
+    Route::get('/payment/khalti/success/{order}', [PaymentController::class, 'khaltiSuccess'])
+        ->name('payment.khalti.success');
 
-    // Order Confirmation
-    Route::get('/order/confirmation/{id}', [OrderController::class,'confirmation'])->name('order.confirmation');
+    // Orders
+    Route::get('/order/confirmation/{id}', [OrderController::class, 'confirmation'])
+        ->name('order.confirmation');
+    Route::get('/orderinfo', [OrderInfoController::class, 'index'])
+        ->name('orderinfo');
 
-    // Shop Routes
-    Route::get('/shop', [ShopController::class,'index'])->name('shop');
-
-    // Wishlist Routes
+    // Wishlist
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
     Route::post('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
     Route::get('/wishlist/count', [WishlistController::class, 'count'])->name('wishlist.count');
 
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Admin Panel
-Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+/*
+|--------------------------------------------------------------------------
+| ADMIN PANEL ROUTES
+|--------------------------------------------------------------------------
+*/
 
     // Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
@@ -109,7 +126,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])
         ->name('admin.users.delete');
 
-});
+// });
 
 // Route::get('/contact_us', [ContactusController::class, 'contact'])
 //         ->name('contact');
@@ -132,32 +149,57 @@ Route::post('/contact/send', [ContactusController::class, 'submitContactForm'])-
 
 
 // use App\Http\Controllers\AboutUsController;
-
-Route::middleware(['auth','admin'])
+// 
+// Route::middleware(['auth','admin'])
+Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-    Route::get('/about', [AboutUsController::class, 'list'])->name('about.list');
+    // Dashboard
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])
+        ->name('dashboard');
 
+    // Categories
+    Route::resource('categories', CategoryController::class)
+        ->except(['show']);
+
+    // Products
+    Route::resource('products', ProductController::class)
+        ->except(['show']);
+
+    // Orders
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.view');
+    Route::post('/orders/update-status/{id}', [OrderController::class, 'updateStatus'])
+        ->name('orders.updateStatus');
+
+    // Users
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.view');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])
+        ->name('users.delete');
+
+    // About Us CMS
+    Route::get('/about', [AboutUsController::class, 'list'])->name('about.list');
     Route::get('/about/create', [AboutUsController::class, 'create'])->name('about.create');
     Route::post('/about/store', [AboutUsController::class, 'store'])->name('about.store');
-
     Route::get('/about/edit/{id}', [AboutUsController::class, 'edit'])->name('about.edit');
     Route::post('/about/update/{id}', [AboutUsController::class, 'update'])->name('about.update');
-
-    Route::get('/about/delete/{id}', [AboutUsController::class, 'destroy'])->name('about.delete');
+    Route::delete('/about/{id}', [AboutUsController::class, 'destroy'])->name('about.delete');
 });
 
 
-use Illuminate\Support\Facades\Mail;
+/*
+|--------------------------------------------------------------------------
+| TEST / UTILITY ROUTES
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/gmail-test', function () {
     Mail::raw('Laravel Gmail SMTP test', function ($message) {
-        $message->to('sheelabhusal567@gmail.com')
-                ->subject('SMTP TEST');
+        $message->to('sthsarita18@gmail.com')->subject('SMTP TEST');
     });
-
     return 'Mail sent';
 });
 
