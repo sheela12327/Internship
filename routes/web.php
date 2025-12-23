@@ -14,6 +14,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ShopNewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Mail;
@@ -94,7 +95,68 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
+<<<<<<< HEAD
 Route::middleware(['auth', 'admin'])
+=======
+    // Categories
+    Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+    Route::post('/categories/store', [CategoryController::class, 'store'])->name('admin.categories.store');
+    Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+    Route::post('/categories/update/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
+    Route::delete('/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.delete');
+
+    // Products
+    Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+    Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
+    Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
+    Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+
+     // ================= ORDERS =================
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('admin.orders.index');
+    Route::get('/orders/view/{id}', [OrderController::class, 'show'])
+        ->name('admin.orders.view');
+    Route::post('/orders/update-status/{id}', [OrderController::class, 'updateStatus'])
+        ->name('admin.orders.updateStatus');
+
+
+    // ================= USERS =================
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('admin.users.index');
+    Route::get('/users/view/{id}', [UserController::class, 'show'])
+        ->name('admin.users.view');
+    Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])
+        ->name('admin.users.delete');
+
+});
+
+// Route::get('/contact_us', [ContactusController::class, 'contact'])
+//         ->name('contact');
+
+// use App\Http\Controllers\ContactController;
+
+Route::get('/contact', [ContactusController::class, 'contact'])->name('contact');
+Route::post('/contact/send', [ContactusController::class, 'submitContactForm'])->name('contact.send');
+
+        
+
+
+
+        // use App\Http\Controllers\AboutController;
+
+// FRONTEND
+// Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+// ADMIN CRUD
+
+
+// use App\Http\Controllers\AboutUsController;
+
+Route::middleware(['auth','admin'])
+>>>>>>> origin/main
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
@@ -146,4 +208,18 @@ Route::get('/gmail-test', function () {
     return 'Mail sent';
 });
 
+<<<<<<< HEAD
+=======
+
+ Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
+
+
+
+ Route::get('/shopnow', [ShopNewController::class, 'index'])->name('shopnow');
+
+
+
+
+
+>>>>>>> origin/main
 require __DIR__ . '/auth.php';

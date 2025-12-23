@@ -59,6 +59,7 @@ class ProductController extends Controller
         }
 
         $product = Product::create($validated);
+        
 
         // AJAX support
         if ($request->ajax()) {

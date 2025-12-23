@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Product;
+use Illuminate\Http\Request;
 
-class IndexController extends Controller
+class ShopNewController extends Controller
 {
-    public function index()
+    //
+     public function index()
     {
         $categories = Category::with([
             'products' => function ($q) {
@@ -39,11 +40,12 @@ class IndexController extends Controller
                 ->take(8);
         }
 
-        return view('frontend.index', compact(
+        return view('frontend.shop.index', compact(
             'categories',
             'featuredByCategory',
             'hotDealsByCategory',
             'topSellingByCategory'
         ));
     }
+
 }
