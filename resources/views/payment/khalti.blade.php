@@ -1,38 +1,20 @@
-<!-- @extends('template.template')
+@extends('template.template')
 
 @section('pagecontent')
-<div class="container mt-5">
-    <h2>Khalti Payment</h2>
-    <p>Order ID: #{{ $order->id }}</p>
-    <p>Total Amount: Rs. {{ number_format($order->total_amount, 2) }}</p>
+<div class="section">
+    <div class="container">
+        <h2>Redirecting to Khalti...</h2>
+        <p>Please wait while we redirect you to the payment gateway.</p>
 
-    <button id="khalti_btn" class="btn btn-primary">Pay with Khalti</button>
+        <form id="khaltiForm" action="{{ route('khalti.payment') }}" method="POST">
+            @csrf
+            <input type="hidden" name="order_id" value="{{ $order->id }}">
+            <input type="hidden" name="amount" value="{{ $order->total_amount * 100 }}"> <!-- amount in paisa -->
+        </form>
+    </div>
 </div>
 
-<script src="https://khalti.com/static/khalti-checkout.js"></script>
 <script>
-    var config = {
-        "publicKey": "test_public_key_xxxxxxxxxxxxx", // Replace with your Khalti test public key
-        "productIdentity": "{{ $order->id }}",
-        "productName": "Order #{{ $order->id }}",
-        "productUrl": "{{ route('home') }}",
-        "eventHandler": {
-            onSuccess (payload) {
-                // Send payload to your backend for verification
-                window.location.href = "{{ route('payment.khalti.success', $order->id) }}";
-            },
-            onError (error) {
-                alert('Payment failed. Please try again.');
-            },
-            onClose () {
-                alert('Payment popup closed.');
-            }
-        },
-        "paymentPreference": ["KHALTI", "EBANKING","MOBILEBANKING","CONNECTIPS","SCT"]
-    };
-    var checkout = new KhaltiCheckout(config);
-    document.getElementById("khalti_btn").onclick = function () {
-        checkout.show({amount: {{ intval($order->total_amount * 100) }} }); // Amount in paisa
-    }
+    document.getElementById('khaltiForm').submit();
 </script>
-@endsection -->
+@endsection

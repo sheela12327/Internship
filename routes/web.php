@@ -56,17 +56,26 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])
         ->name('cart.updateQuantity');
 
-    // Checkout
+    // Checkout page
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-    Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+
+    // Place order (form submission)
+    Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+
+    // Order confirmation page
     Route::get('/order/confirmation/{order}', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
 
-    // Payments
+    // Payment callbacks
+    Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
+    Route::get('/payment/cancel', [CheckoutController::class, 'paymentCancel'])->name('payment.cancel');
+
+    // eSewa payment
     Route::get('/payment/esewa/success/{order}', [PaymentController::class, 'esewaSuccess'])
         ->name('payment.esewa.success');
     Route::get('/payment/esewa/cancel/{order}', [PaymentController::class, 'esewaCancel'])
         ->name('payment.esewa.cancel');
 
+    //Khalti payment    
     Route::get('/payment/khalti/success/{order}', [PaymentController::class, 'khaltiSuccess'])
         ->name('payment.khalti.success');
 
@@ -138,11 +147,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/contact', [ContactusController::class, 'contact'])->name('contact');
 Route::post('/contact/send', [ContactusController::class, 'submitContactForm'])->name('contact.send');
 
-        
-
-
-
-        // use App\Http\Controllers\AboutController;
+// use App\Http\Controllers\AboutController;
 
 // FRONTEND
 // Route::get('/about', [AboutController::class, 'index'])->name('about');
@@ -204,12 +209,8 @@ Route::get('/gmail-test', function () {
     return 'Mail sent';
 });
 
-
- Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
-
-
-
- Route::get('/shopnow', [ShopNewController::class, 'index'])->name('shopnow');
+Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
+Route::get('/shopnow', [ShopNewController::class, 'index'])->name('shopnow');
 
 
 

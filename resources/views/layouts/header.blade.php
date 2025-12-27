@@ -174,7 +174,7 @@
 							</a>
 							<div class="cart-dropdown">
 								<div class="cart-list" id="cart-items">
-									<!-- JS will populate this -->
+									
 								</div>
 								<div class="cart-summary">
 									<small id="cart-total-items">0 Item(s) selected</small>

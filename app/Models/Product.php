@@ -10,7 +10,9 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name','description','price','old_price','stock', 'category_id','image','status', 'is_featured','is_hot_deal','is_top_selling'
+        'name','description','price','old_price','stock',
+        'category_id','image','status',
+        'is_featured','is_hot_deal','is_top_selling','is_active',
     ];
 
      protected $casts = [
@@ -21,6 +23,7 @@ class Product extends Model
         'is_featured'    => 'boolean',
         'is_hot_deal'    => 'boolean',
         'is_top_selling' => 'boolean',
+        'is_active'      => 'boolean',
     ];
 
 

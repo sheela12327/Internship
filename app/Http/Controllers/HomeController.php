@@ -65,14 +65,6 @@ class HomeController extends Controller
         ==========================*/
         $staticFeatured = [
             [
-                'name' => 'Hair Clips',
-                'category' => 'Accessories',
-                'price' => 250,
-                'old_price' => 300,
-                'image' => 'frontend/img/product02.png',
-                'rating' => 4
-            ],
-            [
                 'name' => 'T-shirt',
                 'category' => 'Summer collection',
                 'price' => 150,

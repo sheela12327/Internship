@@ -27,14 +27,14 @@ class OrderItemController extends Controller
             'order_id'   => 'required|exists:orders,id',
             'product_id' => 'required|exists:products,id',
             'price'      => 'required|numeric',
-            'qty'        => 'required|integer|min:1',
+            'quantity'   => 'required|integer|min:1',
         ]);
 
         OrderItem::create([
             'order_id'   => $request->order_id,
             'product_id' => $request->product_id,
             'price'      => $request->price,
-            'qty'        => $request->qty,
+            'quantity'   => $request->qty,
         ]);
 
         return back()->with('success', 'Order item added successfully.');

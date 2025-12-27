@@ -21,9 +21,9 @@
                         <td>{{ $item['name'] }}</td>
                         <td>Rs. {{ $item['price'] }}</td>
                         <td>
-                            <input type="number" class="qty" value="{{ $item['qty'] }}" min="1" style="width:60px">
+                            <input type="number" class="quantity" value="{{ $item['quantity'] }}" min="1" style="width:60px">
                         </td>
-                        <td class="row-total">Rs. {{ $item['price'] * $item['qty'] }}</td>
+                        <td class="row-total">Rs. {{ $item['price'] * $item['quantity'] }}</td>
                         <td>
                             <button class="btn btn-danger remove-item">Remove</button>
                         </td>
@@ -32,7 +32,7 @@
             </tbody>
         </table>
 
-        <h4>Total: Rs. <span id="cart-total">{{ array_sum(array_map(fn($i) => $i['price'] * $i['qty'], $cart)) }}</span></h4>
+        <h4>Total: Rs. <span id="cart-total">{{ array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $cart)) }}</span></h4>
         <a href="{{ route('checkout') }}" class="btn btn-success">Proceed to Checkout</a>
 
     @else
