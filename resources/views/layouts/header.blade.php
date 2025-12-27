@@ -73,8 +73,6 @@
 						</ul>
 					</li>
 
-
-
 					<li class="{{ request()->routeIs('contact') ? 'active' : '' }}">
 						<a href="{{ route('contact') }}">Contact Us</a>
 					</li>
@@ -139,19 +137,19 @@
 				<!-- SEARCH BAR -->
 				<div class="col-md-6">
 					<div class="header-search">
-						<form>
-							<input class="input" placeholder="Search here" class="search">
-							<button class="search-btn">Search</button>	
+						<form action="{{ route('search.products') }}" method="GET">
+							<input type="text" name="query" class="input search" placeholder="Search here" required>
+							<button type="submit" class="search-btn">Search</button>  
 						</form>
 					</div>
 				</div>
-				<!-- /SEARCH BAR -->
-				<style>
-					.header-search .input {
-						border-radius: 40px 0 0 40px; /* left side rounded */
-					}
 
+				<style>
+				.header-search .input {
+					border-radius: 40px 0 0 40px; /* left side rounded */
+				}
 				</style>
+
 
 				<!-- ACCOUNT -->
 				<div class="col-md-3 clearfix">

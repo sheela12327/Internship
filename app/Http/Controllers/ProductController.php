@@ -150,4 +150,18 @@ class ProductController extends Controller
             ->latest()
             ->get();
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Search products by name or category
+        $products = \App\Models\Product::where('name', 'LIKE', "%$query%")
+            ->orWhereHas('category', function($q) use ($query) {
+                $q->where('name', 'LIKE', "%$query%");
+            })
+            ->get();
+
+        return view('frontend.products.search_results', compact('products', 'query'));
+    }
+
 }

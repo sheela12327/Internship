@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 // Public Routes
 Route::get('/', [IndexController::class, 'index'])->name('index');
 
+Route::get('/search', [ProductController::class, 'search'])->name('search.products');
+
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/product/{slug}', [ShopController::class, 'show'])->name('product.detail');
 Route::get('/category/{slug}', [ProductController::class, 'categoryProducts'])
