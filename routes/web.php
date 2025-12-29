@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\OrderController;
@@ -35,6 +36,9 @@ Route::get('/aboutus', [AboutUsController::class, 'aboutus'])->name('aboutus');
 Route::get('/contact', [ContactusController::class, 'contact'])->name('contact');
 Route::post('/contact/send', [ContactusController::class, 'submitContactForm'])
     ->name('contact.send');
+
+// Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
+Route::get('/shopnow', [ShopNewController::class, 'index'])->name('shopnow');
 
 
 /*
@@ -67,6 +71,16 @@ Route::middleware(['auth'])->group(function () {
     // Order confirmation page
     Route::get('/order/confirmation/{order}', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
 
+    //Customer order page
+    Route::get('/my-orders', [CustomerOrderController::class, 'index'])
+        ->name('customer.orders');
+
+    Route::get('/my-orders/{id}', [CustomerOrderController::class, 'show'])
+        ->name('customer.orders.show');
+
+    Route::get('/my-orders/{id}/invoice', [CustomerOrderController::class, 'invoice'])
+        ->name('customer.orders.invoice');
+
     // Payment callbacks
     Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
     Route::get('/payment/cancel', [CheckoutController::class, 'paymentCancel'])->name('payment.cancel');
@@ -84,8 +98,8 @@ Route::middleware(['auth'])->group(function () {
     // Orders
     Route::get('/order/confirmation/{id}', [OrderController::class, 'confirmation'])
         ->name('order.confirmation');
-    Route::get('/orderinfo', [OrderInfoController::class, 'index'])
-        ->name('orderinfo');
+    // Route::get('/orderinfo', [OrderInfoController::class, 'index'])
+    //     ->name('orderinfo');
 
     // Wishlist
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
@@ -130,7 +144,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders/update-status/{id}', [OrderController::class, 'updateStatus'])
         ->name('admin.orders.updateStatus');
 
-
     // ================= USERS =================
     Route::get('/users', [UserController::class, 'index'])
         ->name('admin.users.index');
@@ -139,25 +152,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])
         ->name('admin.users.delete');
 
-// });
-
-// Route::get('/contact_us', [ContactusController::class, 'contact'])
-//         ->name('contact');
-
-// use App\Http\Controllers\ContactController;
-
-Route::get('/contact', [ContactusController::class, 'contact'])->name('contact');
-Route::post('/contact/send', [ContactusController::class, 'submitContactForm'])->name('contact.send');
-
-// use App\Http\Controllers\AboutController;
-
-// FRONTEND
-// Route::get('/about', [AboutController::class, 'index'])->name('about');
-
-// ADMIN CRUD
-
-
-// use App\Http\Controllers\AboutUsController;
 
 Route::middleware(['auth','admin'])
     ->prefix('admin')
@@ -210,12 +204,5 @@ Route::get('/gmail-test', function () {
     });
     return 'Mail sent';
 });
-
-Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
-Route::get('/shopnow', [ShopNewController::class, 'index'])->name('shopnow');
-
-
-
-
 
 require __DIR__ . '/auth.php';

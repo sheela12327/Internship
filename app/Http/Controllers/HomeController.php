@@ -64,49 +64,49 @@ class HomeController extends Controller
            Static Products (optional)
         ==========================*/
         $staticFeatured = [
-            [
-                'name' => 'T-shirt',
-                'category' => 'Summer collection',
-                'price' => 150,
-                'old_price' => 250,
-                'image' => 'frontend/img/product04.png',
-                'rating' => 5
-            ],
-            [
-                'name' => 'Ladies T-shirt',
-                'category' => 'Summer collection',
-                'price' => 200,
-                'old_price' => 300,
-                'image' => 'frontend/img/product05.png',
-                'rating' => 5
-            ]
+            // [
+            //     'name' => 'T-shirt',
+            //     'category' => 'Summer collection',
+            //     'price' => 150,
+            //     'old_price' => 250,
+            //     'image' => 'frontend/img/product04.png',
+            //     'rating' => 5
+            // ],
+            // [
+            //     'name' => 'Ladies T-shirt',
+            //     'category' => 'Summer collection',
+            //     'price' => 200,
+            //     'old_price' => 300,
+            //     'image' => 'frontend/img/product05.png',
+            //     'rating' => 5
+            // ]
         ];
 
         $staticTopSelling = [
-            [
-                'name' => 'Product 6',
-                'category' => 'Category',
-                'price' => 980,
-                'old_price' => 990,
-                'image' => 'frontend/img/product06.png',
-                'rating' => 5
-            ],
-            [
-                'name' => 'Product 7',
-                'category' => 'Category',
-                'price' => 980,
-                'old_price' => 990,
-                'image' => 'frontend/img/product07.png',
-                'rating' => 4
-            ],
-            [
-                'name' => 'Product 8',
-                'category' => 'Category',
-                'price' => 980,
-                'old_price' => 990,
-                'image' => 'frontend/img/product08.png',
-                'rating' => 0
-            ]
+            // [
+            //     'name' => 'Product 6',
+            //     'category' => 'Category',
+            //     'price' => 980,
+            //     'old_price' => 990,
+            //     'image' => 'frontend/img/product06.png',
+            //     'rating' => 5
+            // ],
+            // [
+            //     'name' => 'Product 7',
+            //     'category' => 'Category',
+            //     'price' => 980,
+            //     'old_price' => 990,
+            //     'image' => 'frontend/img/product07.png',
+            //     'rating' => 4
+            // ],
+            // [
+            //     'name' => 'Product 8',
+            //     'category' => 'Category',
+            //     'price' => 980,
+            //     'old_price' => 990,
+            //     'image' => 'frontend/img/product08.png',
+            //     'rating' => 0
+            // ]
         ];
 
         /* =========================

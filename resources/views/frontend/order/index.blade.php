@@ -46,7 +46,7 @@
                             @endphp
                             <div class="order-col">
                                 <div>{{ $item->quantity }}x {{ $item->product->name }}</div>
-                                <div>${{ number_format($itemTotal, 2) }}</div>
+                                <div>Rs. {{ number_format($itemTotal, 2) }}</div>
                             </div>
                         @endforeach
                     @else
@@ -55,7 +55,7 @@
 
                     <div class="order-col">
                         <div><strong>Subtotal</strong></div>
-                        <div><strong>${{ number_format($subtotal, 2) }}</strong></div>
+                        <div><strong>Rs. {{ number_format($subtotal, 2) }}</strong></div>
                     </div>
 
                     <div class="order-col">
@@ -65,7 +65,7 @@
 
                     <div class="order-col">
                         <div><strong>Total</strong></div>
-                        <div><strong class="order-total">${{ number_format($subtotal, 2) }}</strong></div>
+                        <div><strong class="order-total">Rs. {{ number_format($subtotal, 2) }}</strong></div>
                     </div>
                 </div>
             </div>

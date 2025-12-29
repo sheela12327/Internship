@@ -82,7 +82,7 @@
 							Pages <i class="fa fa-caret-down"></i>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="{{route('orderinfo')}}" style="">Orders</a></li>
+							<li><a href="{{route('customer.orders')}}">Orders</a></li>
 							<li><a href="#">Chats</a></li>
 							<li><a href="{{route('shopnow')}}">Shop</a></li>
 							

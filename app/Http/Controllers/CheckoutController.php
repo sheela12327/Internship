@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CheckoutController extends Controller
 {
@@ -49,29 +50,13 @@ class CheckoutController extends Controller
             'payment_method' => 'required|string|in:cash,esewa,khalti',
         ]);
 
-        if (Auth::check()) {
-            $cartItems = CartItem::with('product')
-                ->whereHas('cart', fn($q) => $q->where('user_id', Auth::id()))
-                ->get();
-        } else {
-            $sessionCart = session()->get('cart', []);
-            $cartItems = collect();
-            foreach ($sessionCart as $productId => $item) {
-                $product = Product::find($productId);
-                if ($product) {
-                    $cartItems->push((object)[
-                        'product' => $product,
-                        'quantity' => $item['qty'] ?? $item['quantity'] ?? 1
-                    ]);
-                }
-            }
-        }
-
+        // Get cart items
+        $cartItems = $this->getCartItems();
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Your cart is empty.');
         }
 
-        // Calculate total amount
+        // Calculate total
         $totalAmount = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
 
         // Create Order
@@ -86,7 +71,7 @@ class CheckoutController extends Controller
             'payment_method' => $request->payment_method,
         ]);
 
-        // Create Order Items
+        // Create Order Items & reduce stock
         foreach ($cartItems as $item) {
             OrderItem::create([
                 'order_id' => $order->id,
@@ -97,7 +82,7 @@ class CheckoutController extends Controller
 
             if (Auth::check()) {
                 $item->product->decrement('stock', $item->quantity);
-                $item->delete(); // remove from database cart
+                $item->delete(); // remove from DB cart
             }
         }
 
@@ -105,6 +90,9 @@ class CheckoutController extends Controller
         if (!Auth::check()) {
             session()->forget('cart');
         }
+
+        // Store order ID in session for invoice download
+        session(['last_order_id' => $order->id]);
 
         // Redirect based on payment method
         switch ($request->payment_method) {
@@ -118,11 +106,33 @@ class CheckoutController extends Controller
         }
     }
 
-    // Order confirmation page
+    // Order confirmation page with "Download Invoice" button
     public function confirmation(Order $order)
     {
         $order->load('items.product');
-        return view('frontend.order.confirmation', compact('order'));
+        return view('order.confirmation', compact('order'));
+    }
+
+    // Generate PDF invoice
+    public function downloadInvoice(Order $order)
+    {
+        $order->load('items.product');
+
+        $data = [
+            'name' => $order->name,
+            'email' => $order->email,
+            'phone' => $order->phone,
+            'address' => $order->address,
+            'notes' => $order->notes ?? '',
+            'cart' => $order->items->map(fn($item) => [
+                'name' => $item->product->name,
+                'price' => $item->price,
+                'quantity' => $item->quantity,
+            ]),
+        ];
+
+        $pdf = Pdf::loadView('invoice', $data);
+        return $pdf->download("Invoice_Order_{$order->id}.pdf");
     }
 
     // eSewa payment success
@@ -137,5 +147,28 @@ class CheckoutController extends Controller
     {
         return redirect()->route('checkout')
             ->with('error', 'Payment was cancelled.');
+    }
+
+    // Helper to get cart items
+    private function getCartItems()
+    {
+        if (Auth::check()) {
+            return CartItem::with('product')
+                ->whereHas('cart', fn($q) => $q->where('user_id', Auth::id()))
+                ->get();
+        } else {
+            $sessionCart = session()->get('cart', []);
+            $cartItems = collect();
+            foreach ($sessionCart as $productId => $item) {
+                $product = Product::find($productId);
+                if ($product) {
+                    $cartItems->push((object)[
+                        'product' => $product,
+                        'quantity' => $item['qty'] ?? $item['quantity'] ?? 1
+                    ]);
+                }
+            }
+            return $cartItems;
+        }
     }
 }

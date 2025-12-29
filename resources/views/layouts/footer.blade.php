@@ -39,7 +39,7 @@
 									<li><a href="{{ route('aboutus') }}">About Us</a></li>
 									<li><a href="{{ route('contact') }}">Contact Us</a></li>
 									<li><a href="#">Privacy Policy</a></li>
-									<li><a href="{{route('orderinfo')}}">Orders and Returns</a></li>
+									<li><a href="{{route('customer.orders')}}">Orders and Returns</a></li>
 									<li><a href="#">Terms & Conditions</a></li>
 								</ul>
 							</div>
@@ -52,7 +52,7 @@
 									<li><a href="#">My Account</a></li>
 									<li><a href="{{ route('cart') }}">View Cart</a></li>
 									<li><a href="{{ route('wishlist') }}">Wishlist</a></li>
-									<li><a href="{{route('orderinfo')}}">Track My Order</a></li>
+									<li><a href="{{route('customer.orders')}}">Track My Order</a></li>
 									<li><a href="#">Help</a></li>
 								</ul>
 							</div>
@@ -80,7 +80,7 @@
 							</ul> -->
 							<span class="copyright">
 								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-								MyShop &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved 
+								MyShop &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved 
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 							</span>
 						</div>
