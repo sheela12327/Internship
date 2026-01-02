@@ -6,101 +6,169 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CheckoutController extends Controller
 {
     // Show checkout page
     public function index()
     {
-        $cart = session()->get('cart', []);
-        return view('checkout.index', compact('cart'));
+        if (Auth::check()) {
+            // Logged-in user: fetch from database
+            $cartItems = CartItem::with('product')
+                ->whereHas('cart', fn($q) => $q->where('user_id', Auth::id()))
+                ->get();
+        } else {
+            // Guest: fetch from session
+            $sessionCart = session()->get('cart', []);
+            $cartItems = collect();
+            foreach ($sessionCart as $productId => $item) {
+                $product = Product::find($productId);
+                if ($product) {
+                    $cartItems->push((object)[
+                        'product' => $product,
+                        'quantity' => $item['qty'] ?? $item['quantity'] ?? 1
+                    ]);
+                }
+            }
+        }
+
+        return view('frontend.order.index', compact('cartItems'));
     }
 
     // Place the order
     public function placeOrder(Request $request)
     {
-       $cart = session()->get('cart');
-
-        if (!$cart || count($cart) == 0) {
-            return back()->with('error', 'Your cart is empty');
-        }
-
-        $order = Order::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'payment_method' => $request->payment_method,
-            'status' => 'pending'
-        ]);
-
-        foreach ($cart as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item['product_id'], // VERY IMPORTANT
-                'price' => $item['price'],
-                'qty' => $item['qty'],
-            ]);
-        }
-
-        session()->forget('cart');
-
-        return redirect()->route('order.confirmation', $order->id)
-            ->with('success', 'Order placed successfully.');
-
-        // Validate user input
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
             'address' => 'required|string|max:500',
-            'payment_method' => 'required|string|in:esewa,khalti,cod', // cod = cash on delivery
+            'payment_method' => 'required|string|in:cash,esewa,khalti',
         ]);
 
-        // Calculate total amount
-        $totalAmount = array_sum(array_map(fn($item) => $item['price'] * $item['qty'], $cart));
+        // Get cart items
+        $cartItems = $this->getCartItems();
+        if ($cartItems->isEmpty()) {
+            return back()->with('error', 'Your cart is empty.');
+        }
 
-        // Create order
+        // Calculate total
+        $totalAmount = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+
+        // Create Order
         $order = Order::create([
             'user_id' => Auth::id() ?? null,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'total_amount' => $totalAmount,  // <--- must match DB column
+            'total_amount' => $totalAmount,
             'status' => 'pending',
             'payment_method' => $request->payment_method,
         ]);
 
-        // Create order items and update stock
-        foreach ($cart as $productId => $item) {
+        // Create Order Items & reduce stock
+        foreach ($cartItems as $item) {
             OrderItem::create([
                 'order_id' => $order->id,
-                'product_id' => $productId,
-                'quantity' => $item['qty'],
-                'price' => $item['price'],
+                'product_id' => $item->product->id,
+                'price' => $item->product->price,
+                'quantity' => $item->quantity,
             ]);
 
-            $product = Product::find($productId);
-            if ($product) {
-                $product->stock -= $item['qty'];
-                $product->save();
+            if (Auth::check()) {
+                $item->product->decrement('stock', $item->quantity);
+                $item->delete(); // remove from DB cart
             }
         }
 
-        // Clear cart
-        session()->forget('cart');
+        // Clear session cart for guest
+        if (!Auth::check()) {
+            session()->forget('cart');
+        }
 
-        // Redirect to payment page or order confirmation
+        // Store order ID in session for invoice download
+        session(['last_order_id' => $order->id]);
+
+        // Redirect based on payment method
         switch ($request->payment_method) {
             case 'esewa':
                 return view('payment.esewa', compact('order'));
             case 'khalti':
                 return view('payment.khalti', compact('order'));
-            default: // cod or other
+            default: // cash on delivery
                 return redirect()->route('order.confirmation', $order->id)
-                                ->with('success', 'Order placed successfully.');
+                    ->with('success', 'Order placed successfully.');
+        }
+    }
+
+    // Order confirmation page with "Download Invoice" button
+    public function confirmation(Order $order)
+    {
+        $order->load('items.product');
+        return view('order.confirmation', compact('order'));
+    }
+
+    // Generate PDF invoice
+    public function downloadInvoice(Order $order)
+    {
+        $order->load('items.product');
+
+        $data = [
+            'name' => $order->name,
+            'email' => $order->email,
+            'phone' => $order->phone,
+            'address' => $order->address,
+            'notes' => $order->notes ?? '',
+            'cart' => $order->items->map(fn($item) => [
+                'name' => $item->product->name,
+                'price' => $item->price,
+                'quantity' => $item->quantity,
+            ]),
+        ];
+
+        $pdf = Pdf::loadView('invoice', $data);
+        return $pdf->download("Invoice_Order_{$order->id}.pdf");
+    }
+
+    // eSewa payment success
+    public function paymentSuccess(Request $request)
+    {
+        return redirect()->route('order.confirmation', session('order_id'))
+            ->with('success', 'Payment completed successfully.');
+    }
+
+    // eSewa payment cancelled
+    public function paymentCancel(Request $request)
+    {
+        return redirect()->route('checkout')
+            ->with('error', 'Payment was cancelled.');
+    }
+
+    // Helper to get cart items
+    private function getCartItems()
+    {
+        if (Auth::check()) {
+            return CartItem::with('product')
+                ->whereHas('cart', fn($q) => $q->where('user_id', Auth::id()))
+                ->get();
+        } else {
+            $sessionCart = session()->get('cart', []);
+            $cartItems = collect();
+            foreach ($sessionCart as $productId => $item) {
+                $product = Product::find($productId);
+                if ($product) {
+                    $cartItems->push((object)[
+                        'product' => $product,
+                        'quantity' => $item['qty'] ?? $item['quantity'] ?? 1
+                    ]);
+                }
+            }
+            return $cartItems;
         }
     }
 }

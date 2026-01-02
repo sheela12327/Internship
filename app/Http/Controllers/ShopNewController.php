@@ -7,39 +7,47 @@ use Illuminate\Http\Request;
 
 class ShopNewController extends Controller
 {
-    //
-     public function index()
+    public function index()
     {
-        $categories = Category::with([
-            'products' => function ($q) {
-                $q->where('is_active', 1)->latest();
-            }
-        ])->get();
+        /* =========================
+           Fetch Categories
+        ==========================*/
+        $categories = Category::all();
 
-        // Featured (grouped by category)
+        /* =========================
+           Featured Products by Category
+        ==========================*/
         $featuredByCategory = [];
-        foreach ($categories as $category) {
-            $featuredByCategory[$category->id] = $category->products
-                ->where('is_featured', 1)
-                ->take(8);
-        }
-
-        // Hot Deals (grouped by category)
         $hotDealsByCategory = [];
-        foreach ($categories as $category) {
-            $hotDealsByCategory[$category->id] = $category->products
-                ->where('is_hot_deal', 1)
-                ->take(8);
-        }
-
-        // Top Selling (grouped by category)
         $topSellingByCategory = [];
+
         foreach ($categories as $category) {
-            $topSellingByCategory[$category->id] = $category->products
+
+            $featuredByCategory[$category->id] = $category->products()
+                ->where('is_active', 1)
+                ->where('is_featured', 1)
+                ->latest()
+                ->take(8)
+                ->get();
+
+            $hotDealsByCategory[$category->id] = $category->products()
+                ->where('is_active', 1)
+                ->where('is_hot_deal', 1)
+                ->latest()
+                ->take(8)
+                ->get();
+
+            $topSellingByCategory[$category->id] = $category->products()
+                ->where('is_active', 1)
                 ->where('is_top_selling', 1)
-                ->take(8);
+                ->latest()
+                ->take(8)
+                ->get();
         }
 
+        /* =========================
+           Return Shop View
+        ==========================*/
         return view('frontend.shop.index', compact(
             'categories',
             'featuredByCategory',
@@ -47,5 +55,4 @@ class ShopNewController extends Controller
             'topSellingByCategory'
         ));
     }
-
 }

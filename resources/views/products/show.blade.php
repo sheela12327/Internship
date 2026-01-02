@@ -1,35 +1,67 @@
 @extends('template.template')
 
 @section('pagecontent')
-<div class="container">
-    <div class="row">
+<div class="container product-page">
+    <div class="product-card row align-items-center">
+
         <!-- Product Images -->
-        <div class="col-md-6">
-            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid">
-            <!-- If multiple images -->
+        <div class="col-md-6 product-image-section">
+            <div class="main-image">
+                <img src="{{ asset('storage/' . $product->image) }}"
+                     alt="{{ $product->name }}">
+            </div>
+
             @if($product->images)
-                <div class="mt-2">
+                <div class="thumbnail-images">
                     @foreach($product->images as $img)
-                        <img src="{{ asset('storage/' . $img) }}" width="80">
+                        <img src="{{ asset('storage/' . $img) }}">
                     @endforeach
                 </div>
             @endif
         </div>
 
         <!-- Product Info -->
-        <div class="col-md-6">
-            <h2>{{ $product->name }}</h2>
-            <p>{{ $product->description }}</p>
-            <h4>Rs. {{ $product->price }}</h4>
+        <div class="col-md-6 product-info-section">
 
-            <!-- Add to Cart -->
-            <button class="add-to-cart-btn" 
-                data-id="{{ $product->id }}" 
-                data-name="{{ $product->name }}" 
-                data-price="{{ $product->price }}" 
-                data-image="{{ $product->image }}">
-                <i class="fa fa-shopping-cart"></i> Add to Cart
+            <span class="product-category">
+                {{ $product->category->name ?? 'Product' }}
+            </span>
+
+            <h1 class="product-title">{{ $product->name }}</h1>
+
+            <!-- Rating -->
+            <div class="product-rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+                <span>(4.0)</span>
+            </div>
+
+            <h3 class="product-price">Rs. {{ $product->price }}</h3>
+
+            <p class="product-description">
+                {{ $product->description }}
+            </p>
+
+            <!-- Buttons -->
+            <div class="product-actions">
+                <button class="add-to-cart-btn"
+                        data-id="{{ $product->id }}"
+                        data-name="{{ $product->name }}"
+                        data-price="{{ $product->price }}"
+                        data-image="{{ $product->image }}">
+                    <i class="fa fa-shopping-cart"></i> Add to Cart
+                </button>
+
+                <button class="wishlist-btn" 
+                    data-id="{{ $product->id }}" 
+                    data-name="{{ $product->name }}">
+                <i class="fa fa-heart"></i>
             </button>
+            </div>
+
         </div>
     </div>
 </div>

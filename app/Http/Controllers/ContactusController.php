@@ -35,7 +35,7 @@ public function submitContactForm(Request $request)
     ];
 
     try {
-        Mail::to('sheelabhusal567@gmail.com')
+        Mail::to('saritasth220@gmail.com')
             ->send(new ContactFormMail($mailData));
 
         return response()->json([

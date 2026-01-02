@@ -59,16 +59,19 @@
 						<a href="#" class="dropdown-toggle">
 							Categories <i class="fa fa-caret-down"></i>
 						</a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Summer Collections</a></li>
-						<li><a href="#">Winter Collections</a></li>
-						<li><a href="#">Footwear</a></li>
-						<li><a href="#">Bags</a></li>
-						<li><a href="#">Accessories</a></li>
-					</ul>
 
+						<ul class="dropdown-menu">
+							@forelse($headerCategories as $category)
+								<li>
+									<a href="{{ route('category.products', $category->slug) }}">
+										{{ $category->name }}
+									</a>
+								</li>
+							@empty
+								<li><a href="#">No Categories</a></li>
+							@endforelse
+						</ul>
 					</li>
-
 
 					<li class="{{ request()->routeIs('contact') ? 'active' : '' }}">
 						<a href="{{ route('contact') }}">Contact Us</a>
@@ -79,7 +82,7 @@
 							Pages <i class="fa fa-caret-down"></i>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="{{route('orderinfo')}}" style="">Orders</a></li>
+							<li><a href="{{route('customer.orders')}}">Orders</a></li>
 							<li><a href="#">Chats</a></li>
 							<li><a href="{{route('shopnow')}}">Shop</a></li>
 							
@@ -134,19 +137,19 @@
 				<!-- SEARCH BAR -->
 				<div class="col-md-6">
 					<div class="header-search">
-						<form>
-							<input class="input" placeholder="Search here" class="search">
-							<button class="search-btn">Search</button>	
+						<form action="{{ route('search.products') }}" method="GET">
+							<input type="text" name="query" class="input search" placeholder="Search here" required>
+							<button type="submit" class="search-btn">Search</button>  
 						</form>
 					</div>
 				</div>
-				<!-- /SEARCH BAR -->
-				<style>
-					.header-search .input {
-						border-radius: 40px 0 0 40px; /* left side rounded */
-					}
 
+				<style>
+				.header-search .input {
+					border-radius: 40px 0 0 40px; /* left side rounded */
+				}
 				</style>
+
 
 				<!-- ACCOUNT -->
 				<div class="col-md-3 clearfix">
@@ -169,7 +172,7 @@
 							</a>
 							<div class="cart-dropdown">
 								<div class="cart-list" id="cart-items">
-									<!-- JS will populate this -->
+									
 								</div>
 								<div class="cart-summary">
 									<small id="cart-total-items">0 Item(s) selected</small>
@@ -365,8 +368,6 @@ document.querySelectorAll('.add-to-wishlist').forEach(btn => {
         });
     });
 });
-
-
 
 // ---------------------------
 // Initialize on page load

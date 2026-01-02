@@ -36,10 +36,10 @@
 							<div class="footer">
 								<h3 class="footer-title">Information</h3>
 								<ul class="footer-links">
-									<li><a href="#">About Us</a></li>
-									<li><a href="#">Contact Us</a></li>
+									<li><a href="{{ route('aboutus') }}">About Us</a></li>
+									<li><a href="{{ route('contact') }}">Contact Us</a></li>
 									<li><a href="#">Privacy Policy</a></li>
-									<li><a href="#">Orders and Returns</a></li>
+									<li><a href="{{route('customer.orders')}}">Orders and Returns</a></li>
 									<li><a href="#">Terms & Conditions</a></li>
 								</ul>
 							</div>
@@ -50,9 +50,9 @@
 								<h3 class="footer-title">Service</h3>
 								<ul class="footer-links">
 									<li><a href="#">My Account</a></li>
-									<li><a href="#">View Cart</a></li>
-									<li><a href="#">Wishlist</a></li>
-									<li><a href="#">Track My Order</a></li>
+									<li><a href="{{ route('cart') }}">View Cart</a></li>
+									<li><a href="{{ route('wishlist') }}">Wishlist</a></li>
+									<li><a href="{{route('customer.orders')}}">Track My Order</a></li>
 									<li><a href="#">Help</a></li>
 								</ul>
 							</div>
@@ -80,7 +80,7 @@
 							</ul> -->
 							<span class="copyright">
 								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-								MyShop &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved 
+								MyShop &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved 
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 							</span>
 						</div>

@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+
+    public function categoryProducts($slug)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+
+        $products = Product::where('category_id', $category->id)->get();
+
+        return view('category.products', compact('category', 'products'));
+    }
+
     /* =========================
        ADMIN METHODS
     ==========================*/
@@ -140,4 +150,18 @@ class ProductController extends Controller
             ->latest()
             ->get();
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Search products by name or category
+        $products = \App\Models\Product::where('name', 'LIKE', "%$query%")
+            ->orWhereHas('category', function($q) use ($query) {
+                $q->where('name', 'LIKE', "%$query%");
+            })
+            ->get();
+
+        return view('frontend.products.search_results', compact('products', 'query'));
+    }
+
 }
