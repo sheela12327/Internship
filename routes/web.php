@@ -129,7 +129,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.delete');
 
     // Products
-    Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
+    Route::get('/product', [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
     Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
@@ -232,7 +232,7 @@ Route::get('/gmail-test', function () {
 });
 
 
-//  Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
+ Route::get('/orderinfo', [OrderInfoController::class, 'index'])->name('orderinfo');
 
 
 

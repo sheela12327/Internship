@@ -13,8 +13,8 @@
             <input value="0" name="psc" type="hidden">
             <input value="0" name="pdc" type="hidden">
             <input value="{{ $order->id }}" name="pid" type="hidden">
-            <input value="{{ route('checkout.success') }}" name="su" type="hidden">
-            <input value="{{ route('checkout.cancel') }}" name="fu" type="hidden">
+            <!-- <input value="{{ route('checkout.success') }}" name="su" type="hidden"> -->
+            <!-- <input value="{{ route('checkout.cancel') }}" name="fu" type="hidden"> -->
         </form>
     </div>
 </div>

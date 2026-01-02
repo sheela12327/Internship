@@ -16,26 +16,7 @@ class CheckoutController extends Controller
     // Show checkout page
     public function index()
     {
-        if (Auth::check()) {
-            // Logged-in user: fetch from database
-            $cartItems = CartItem::with('product')
-                ->whereHas('cart', fn($q) => $q->where('user_id', Auth::id()))
-                ->get();
-        } else {
-            // Guest: fetch from session
-            $sessionCart = session()->get('cart', []);
-            $cartItems = collect();
-            foreach ($sessionCart as $productId => $item) {
-                $product = Product::find($productId);
-                if ($product) {
-                    $cartItems->push((object)[
-                        'product' => $product,
-                        'quantity' => $item['qty'] ?? $item['quantity'] ?? 1
-                    ]);
-                }
-            }
-        }
-
+        $cartItems = $this->getCartItems();
         return view('frontend.order.index', compact('cartItems'));
     }
 
@@ -80,16 +61,14 @@ class CheckoutController extends Controller
                 'quantity' => $item->quantity,
             ]);
 
-            if (Auth::check()) {
+            // Reduce stock
+            if($item->product) {
                 $item->product->decrement('stock', $item->quantity);
-                $item->delete(); // remove from DB cart
             }
         }
 
-        // Clear session cart for guest
-        if (!Auth::check()) {
-            session()->forget('cart');
-        }
+        // Clear session cart for ALL users
+        session()->forget('cart');
 
         // Store order ID in session for invoice download
         session(['last_order_id' => $order->id]);
@@ -149,26 +128,21 @@ class CheckoutController extends Controller
             ->with('error', 'Payment was cancelled.');
     }
 
-    // Helper to get cart items
+    // Helper to get cart items from Session
     private function getCartItems()
     {
-        if (Auth::check()) {
-            return CartItem::with('product')
-                ->whereHas('cart', fn($q) => $q->where('user_id', Auth::id()))
-                ->get();
-        } else {
-            $sessionCart = session()->get('cart', []);
-            $cartItems = collect();
-            foreach ($sessionCart as $productId => $item) {
-                $product = Product::find($productId);
-                if ($product) {
-                    $cartItems->push((object)[
-                        'product' => $product,
-                        'quantity' => $item['qty'] ?? $item['quantity'] ?? 1
-                    ]);
-                }
+        $sessionCart = session()->get('cart', []);
+        $cartItems = collect();
+        foreach ($sessionCart as $productId => $item) {
+            $product = Product::find($productId);
+            if ($product) {
+                // Return consistent object structure
+                $cartItems->push((object)[
+                    'product' => $product,
+                    'quantity' => $item['qty'] ?? $item['quantity'] ?? 1
+                ]);
             }
-            return $cartItems;
         }
+        return $cartItems;
     }
 }
