@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'khalti' => [
+        'base_url' => env('KHALTI_BASE_URL', 'https://a.khalti.com/api/v2/'),
+        'public_key' => env('KHALTI_PUBLIC_KEY'),
+        'secret_key' => env('KHALTI_SECRET_KEY'),
+    ],
+
 ];

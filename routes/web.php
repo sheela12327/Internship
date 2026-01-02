@@ -92,6 +92,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('payment.esewa.cancel');
 
     //Khalti payment    
+    Route::post('/payment/khalti', [PaymentController::class, 'initiateKhalti'])
+        ->name('khalti.payment');
     Route::get('/payment/khalti/success/{order}', [PaymentController::class, 'khaltiSuccess'])
         ->name('payment.khalti.success');
 
