@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Checkout page
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::get('/checkout/payment/{order}', [CheckoutController::class, 'paymentPage'])->name('checkout.payment');
 
     // Place order (form submission)
     Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');

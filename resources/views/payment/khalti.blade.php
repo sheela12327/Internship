@@ -62,6 +62,12 @@
                         <p><strong>Address:</strong> {{ $order->address }}</p>
                     </div>
 
+                    @if(session('error'))
+                        <div class="alert alert-danger" style="margin-top: 20px; color: red;">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <div style="margin-top: 30px;">
                         <h4 class="title">Pay with Khalti</h4>
                         <p>You will be redirected to the secure Khalti Payment Gateway to complete your transaction.</p>

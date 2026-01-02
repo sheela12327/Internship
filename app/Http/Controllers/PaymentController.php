@@ -27,7 +27,7 @@ class PaymentController extends Controller
             'customer_info' => [
                 'name' => $order->name,
                 'email' => $order->email,
-                'phone' => $order->phone,
+                'phone' => substr($order->phone, 0, 10), // Limit to 10 chars
             ]
         ];
 
@@ -38,11 +38,13 @@ class PaymentController extends Controller
             ])->post($url, $payload);
 
             $result = $response->json();
+            
+            \Illuminate\Support\Facades\Log::info('Khalti Initiation Response:', $result);
 
             if (isset($result['payment_url'])) {
                 return redirect($result['payment_url']);
             } else {
-                return back()->with('error', 'Khalti Payment Initiation Failed: ' . ($result['detail'] ?? 'Unknown Error'));
+                return back()->with('error', 'Khalti Payment Initiation Failed: ' . ($result['detail'] ?? json_encode($result)));
             }
         } catch (\Exception $e) {
             return back()->with('error', 'Something went wrong: ' . $e->getMessage());

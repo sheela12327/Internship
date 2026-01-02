@@ -26,7 +26,7 @@ class CheckoutController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|string|max:10', // Enforce 10 digit limit
             'address' => 'required|string|max:500',
             'payment_method' => 'required|string|in:cash,esewa,khalti',
         ]);
@@ -73,16 +73,26 @@ class CheckoutController extends Controller
         // Store order ID in session for invoice download
         session(['last_order_id' => $order->id]);
 
-        // Redirect based on payment method
-        switch ($request->payment_method) {
-            case 'esewa':
-                return view('payment.esewa', compact('order'));
-            case 'khalti':
-                return view('payment.khalti', compact('order'));
-            default: // cash on delivery
-                return redirect()->route('order.confirmation', $order->id)
-                    ->with('success', 'Order placed successfully.');
+        // Redirect to payment page
+        if ($request->payment_method == 'esewa' || $request->payment_method == 'khalti') {
+             return redirect()->route('checkout.payment', $order->id);
         }
+
+        // Cash on delivery
+        return redirect()->route('order.confirmation', $order->id)
+            ->with('success', 'Order placed successfully.');
+    }
+
+    // Show Payment Page (PRG Pattern Fix)
+    public function paymentPage(Order $order) 
+    {
+        if ($order->payment_method == 'esewa') {
+            return view('payment.esewa', compact('order'));
+        } elseif ($order->payment_method == 'khalti') {
+            return view('payment.khalti', compact('order'));
+        }
+        
+        return redirect()->route('index');
     }
 
     // Order confirmation page with "Download Invoice" button
